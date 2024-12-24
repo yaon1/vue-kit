@@ -5,7 +5,7 @@ import { defineConfig } from 'vite'
 export default defineConfig({
   plugins: [vue()],
   root: process.env.VITEST ? '.' : 'playground',
-  build: {
+  build: process.env.PLAYGROUND ? { outDir: resolve(__dirname, 'site'), emptyOutDir: true } : {
     outDir: resolve(__dirname, 'dist'),
     emptyOutDir: true,
     lib: { entry: resolve(__dirname, 'src/index.ts'), formats: ['es'], fileName: 'vue-kit' },
