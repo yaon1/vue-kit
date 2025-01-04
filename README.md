@@ -1,63 +1,51 @@
 # vue-kit
 
-Small, accessible Vue 3 components that do the hard parts right. **12 kB JS + 4 kB CSS gzipped ≈ 5.5 kB**, zero dependencies.
+**Небольшие доступные компоненты для Vue 3, в которых сложные части уже сделаны правильно.** Combobox с полной клавиатурной навигацией по WAI-ARIA, таблица на 100 000+ строк без тормозов благодаря виртуализации, тосты, которые озвучивают скринридеры. **≈ 5,5 кБ gzip**, без зависимостей.
 
-| Component | Highlights |
+| Компонент | Что умеет |
 |---|---|
-| `VkCombobox` | WAI-ARIA 1.2 combobox, generic `T`, custom filter, option slot, keyboard (↑ ↓ Home End Enter Esc) |
-| `VkDataTable` | Virtualized (100k+ rows), stable natural sort, `aria-sort` / `aria-rowcount`, cell slots, `v-model:sort` |
-| `VkToastHost` + `useToast()` | `role=status` / `alert`, actions, auto-dismiss, respects `prefers-reduced-motion` |
+| `VkCombobox` | WAI-ARIA 1.2, generic `T`, свой фильтр, слот для опции, клавиатура (↑ ↓ Home End Enter Esc) |
+| `VkDataTable` | Виртуализация, стабильная «натуральная» сортировка, `aria-sort`/`aria-rowcount`, слоты ячеек, `v-model:sort` |
+| `VkToastHost` + `useToast()` | `role=status`/`alert`, кнопки действий, автоскрытие, учитывает `prefers-reduced-motion` |
 
-Light and dark themes via CSS custom properties.
+Светлая и тёмная темы на CSS-переменных.
 
-## Install
+## Пример использования
+
+```vue
+<script setup lang="ts">
+import '@yaon1/vue-kit/style.css'
+import { VkCombobox, VkDataTable, VkToastHost, useToast, type Column } from '@yaon1/vue-kit'
+
+const columns: Column<Order>[] = [
+  { key: 'id', label: '#', width: '80px', sortable: true },
+  { key: 'total', label: 'Сумма', align: 'end', sortable: true, format: (v) => money.format(v as number) },
+  { key: 'customer', label: 'Клиент', value: (o) => o.customer.name, sortable: true },
+]
+const toast = useToast()
+</script>
+
+<template>
+  <VkCombobox v-model="country" :options="countries" :get-label="(c) => c.name" label="Страна" />
+
+  <VkDataTable v-model:sort="sort" :rows="orders" :columns="columns" row-key="id" caption="Заказы" :height="480">
+    <template #cell-customer="{ row }"><a :href="`/c/${row.customer.id}`">{{ row.customer.name }}</a></template>
+  </VkDataTable>
+
+  <button @click="toast.error('Не удалось загрузить', { action: { label: 'Повторить', onClick: retry } })">…</button>
+  <VkToastHost position="bottom-right" />
+</template>
+```
+
+Ошибки в тостах не скрываются сами, пока пользователь их не закроет.
+
+## Установка
 
 ```bash
 npm i @yaon1/vue-kit
 ```
 
-```ts
-import '@yaon1/vue-kit/style.css'
-import { VkCombobox, VkDataTable, VkToastHost, useToast } from '@yaon1/vue-kit'
-```
-
-## Combobox
-
-```vue
-<VkCombobox v-model="country" :options="countries" :get-label="(c) => c.name" label="Country">
-  <template #option="{ option }">{{ option.flag }} {{ option.name }}</template>
-</VkCombobox>
-```
-
-## DataTable
-
-```vue
-<script setup lang="ts">
-const columns: Column<Order>[] = [
-  { key: 'id', label: '#', width: '80px', sortable: true },
-  { key: 'total', label: 'Total', align: 'end', sortable: true, format: (v) => money.format(v as number) },
-  { key: 'customer', label: 'Customer', value: (o) => o.customer.name, sortable: true },
-]
-</script>
-
-<VkDataTable v-model:sort="sort" :rows="orders" :columns="columns" row-key="id" caption="Orders" :height="480">
-  <template #cell-customer="{ row }"><a :href="`/c/${row.customer.id}`">{{ row.customer.name }}</a></template>
-</VkDataTable>
-```
-
-## Toast
-
-```ts
-const toast = useToast()
-toast.success('Saved')
-toast.error('Upload failed', { action: { label: 'Retry', onClick: retry } }) // errors stay until dismissed
-```
-
-Mount `<VkToastHost position="bottom-right" />` once near the app root.
-
-## Theming
-
-Override any token:
+## Темы
 
 ```css
 :root {
@@ -66,18 +54,18 @@ Override any token:
 }
 ```
 
-Force a theme with `<html data-theme="dark">` (or `light`); otherwise it follows `prefers-color-scheme`.
+Тему можно задать явно через `<html data-theme="dark">` или `light`. Без атрибута она следует `prefers-color-scheme`.
 
-## Development
+## Разработка
 
 ```bash
 npm i
-npm run dev        # playground at http://localhost:5173
+npm run dev        # playground: http://localhost:5173
 npm test
 npm run typecheck
 npm run build
 ```
 
-## License
+## Лицензия
 
 MIT
