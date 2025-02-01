@@ -10,3 +10,4 @@ export { useToast, type Toast, type ToastKind, type ToastOptions } from './toast
 export { useClickOutside } from './composables/useClickOutside'
 export { useFocusTrap, focusableIn } from './composables/useFocusTrap'
 export { default as VkSpinner } from './spinner/VkSpinner.vue'
+export { default as VkButton } from './button/VkButton.vue'
