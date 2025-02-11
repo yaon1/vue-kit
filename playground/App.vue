@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref } from 'vue'
 import { VkCombobox, VkDataTable, VkToastHost, useToast, type Column, type SortState } from '../src'
+import { VkButton } from '../src'
+import { VkSpinner } from '../src'
+// extra-imports
 
 type Country = { code: string; name: string }
 const countries: Country[] = ['DE Germany', 'FR France', 'GE Georgia', 'JP Japan', 'KZ Kazakhstan', 'TH Thailand', 'US United States']
@@ -49,6 +52,16 @@ const toast = useToast()
       <h2>Toast</h2>
       <button @click="toast.success('Saved')">Success</button>
       <button @click="toast.error('Upload failed', { action: { label: 'Retry', onClick: () => toast.show('Retrying…') } })">Error</button>
+    </section>
+
+    <section>
+      <h2>Button</h2>
+      <VkButton variant="primary" @click="toast.success('Primary')">Primary</VkButton>
+      <VkButton>Secondary</VkButton>
+      <VkButton variant="ghost">Ghost</VkButton>
+      <VkButton variant="danger">Удалить</VkButton>
+      <VkButton loading>Загрузка</VkButton>
+      <VkSpinner :size="20" />
     </section>
 
     <VkToastHost />
