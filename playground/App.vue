@@ -3,6 +3,7 @@ import { ref } from 'vue'
 import { VkCombobox, VkDataTable, VkToastHost, useToast, type Column, type SortState } from '../src'
 import { VkButton } from '../src'
 import { VkSpinner } from '../src'
+import { VkDialog } from '../src'
 // extra-imports
 
 type Country = { code: string; name: string }
@@ -26,6 +27,7 @@ const columns: Column<Order>[] = [
 ]
 const sort = ref<SortState | null>(null)
 
+const dialogOpen = ref(false)
 const toast = useToast()
 </script>
 
@@ -62,6 +64,18 @@ const toast = useToast()
       <VkButton variant="danger">Удалить</VkButton>
       <VkButton loading>Загрузка</VkButton>
       <VkSpinner :size="20" />
+    </section>
+
+    <section>
+      <h2>Dialog</h2>
+      <VkButton @click="dialogOpen = true">Открыть диалог</VkButton>
+      <VkDialog v-model:open="dialogOpen" title="Удалить проект?">
+        <p>Проект и все его данные будут удалены без возможности восстановления.</p>
+        <template #footer="{ close }">
+          <VkButton @click="close">Отмена</VkButton>
+          <VkButton variant="danger" @click="close(); toast.error('Удалено')">Удалить</VkButton>
+        </template>
+      </VkDialog>
     </section>
 
     <VkToastHost />
