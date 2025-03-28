@@ -4,6 +4,7 @@ import { VkCombobox, VkDataTable, VkToastHost, useToast, type Column, type SortS
 import { VkButton } from '../src'
 import { VkSpinner } from '../src'
 import { VkDialog } from '../src'
+import { VkTabs } from '../src'
 // extra-imports
 
 type Country = { code: string; name: string }
@@ -28,6 +29,7 @@ const columns: Column<Order>[] = [
 const sort = ref<SortState | null>(null)
 
 const dialogOpen = ref(false)
+const tab = ref('general')
 const toast = useToast()
 </script>
 
@@ -76,6 +78,14 @@ const toast = useToast()
           <VkButton variant="danger" @click="close(); toast.error('Удалено')">Удалить</VkButton>
         </template>
       </VkDialog>
+    </section>
+
+    <section>
+      <h2>Tabs</h2>
+      <VkTabs v-model="tab" label="Настройки" :tabs="[{ key: 'general', label: 'Общие' }, { key: 'billing', label: 'Оплата', disabled: true }, { key: 'security', label: 'Безопасность' }]">
+        <template #general>Имя, язык, часовой пояс.</template>
+        <template #security>Пароль и двухфакторная аутентификация.</template>
+      </VkTabs>
     </section>
 
     <VkToastHost />
