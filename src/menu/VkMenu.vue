@@ -54,7 +54,7 @@ function onMenuKeydown(event: KeyboardEvent) {
   items[(next + items.length) % items.length]?.focus()
 }
 
-defineExpose({ show, close, props })
+defineExpose({ show, close })
 </script>
 
 <template>
