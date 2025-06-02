@@ -6,6 +6,7 @@ import { VkSpinner } from '../src'
 import { VkDialog } from '../src'
 import { VkTabs } from '../src'
 import { VkTooltip } from '../src'
+import { VkPagination } from '../src'
 // extra-imports
 
 type Country = { code: string; name: string }
@@ -31,6 +32,7 @@ const sort = ref<SortState | null>(null)
 
 const dialogOpen = ref(false)
 const tab = ref('general')
+const page = ref(1)
 const toast = useToast()
 </script>
 
@@ -94,6 +96,12 @@ const toast = useToast()
       <VkTooltip text="Скопировать ссылку">
         <template #default="{ describedby }"><VkButton :aria-describedby="describedby" aria-label="Копировать">⧉</VkButton></template>
       </VkTooltip>
+    </section>
+
+    <section>
+      <h2>Pagination</h2>
+      <VkPagination v-model="page" :total="20" />
+      <p>Страница {{ page }}</p>
     </section>
 
     <VkToastHost />
