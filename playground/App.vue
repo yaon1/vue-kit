@@ -5,6 +5,7 @@ import { VkButton } from '../src'
 import { VkSpinner } from '../src'
 import { VkDialog } from '../src'
 import { VkTabs } from '../src'
+import { VkTooltip } from '../src'
 // extra-imports
 
 type Country = { code: string; name: string }
@@ -86,6 +87,13 @@ const toast = useToast()
         <template #general>Имя, язык, часовой пояс.</template>
         <template #security>Пароль и двухфакторная аутентификация.</template>
       </VkTabs>
+    </section>
+
+    <section>
+      <h2>Tooltip</h2>
+      <VkTooltip text="Скопировать ссылку">
+        <template #default="{ describedby }"><VkButton :aria-describedby="describedby" aria-label="Копировать">⧉</VkButton></template>
+      </VkTooltip>
     </section>
 
     <VkToastHost />
