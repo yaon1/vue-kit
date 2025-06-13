@@ -7,6 +7,8 @@ import { VkDialog } from '../src'
 import { VkTabs } from '../src'
 import { VkTooltip } from '../src'
 import { VkPagination } from '../src'
+import { VkSwitch } from '../src'
+import { VkCheckbox } from '../src'
 // extra-imports
 
 type Country = { code: string; name: string }
@@ -33,6 +35,8 @@ const sort = ref<SortState | null>(null)
 const dialogOpen = ref(false)
 const tab = ref('general')
 const page = ref(1)
+const notify = ref(true)
+const agree = ref(false)
 const toast = useToast()
 </script>
 
@@ -102,6 +106,13 @@ const toast = useToast()
       <h2>Pagination</h2>
       <VkPagination v-model="page" :total="20" />
       <p>Страница {{ page }}</p>
+    </section>
+
+    <section>
+      <h2>Switch &amp; Checkbox</h2>
+      <VkSwitch v-model="notify" label="Уведомления" description="Письмо при новом заказе" />
+      <p><VkCheckbox v-model="agree" label="Согласен с условиями" /></p>
+      <p><VkCheckbox label="Выбрать все" indeterminate /></p>
     </section>
 
     <VkToastHost />
