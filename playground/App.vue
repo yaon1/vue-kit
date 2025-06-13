@@ -9,6 +9,8 @@ import { VkTooltip } from '../src'
 import { VkPagination } from '../src'
 import { VkSwitch } from '../src'
 import { VkCheckbox } from '../src'
+import { VkBadge } from '../src'
+import { VkAlert } from '../src'
 // extra-imports
 
 type Country = { code: string; name: string }
@@ -37,6 +39,7 @@ const tab = ref('general')
 const page = ref(1)
 const notify = ref(true)
 const agree = ref(false)
+const showAlert = ref(true)
 const toast = useToast()
 </script>
 
@@ -113,6 +116,12 @@ const toast = useToast()
       <VkSwitch v-model="notify" label="Уведомления" description="Письмо при новом заказе" />
       <p><VkCheckbox v-model="agree" label="Согласен с условиями" /></p>
       <p><VkCheckbox label="Выбрать все" indeterminate /></p>
+    </section>
+
+    <section>
+      <h2>Badge &amp; Alert</h2>
+      <p><VkBadge>Черновик</VkBadge> <VkBadge tone="success" dot>Активен</VkBadge> <VkBadge tone="danger">Просрочен</VkBadge></p>
+      <VkAlert v-if="showAlert" tone="warning" title="Подписка заканчивается" dismissible @dismiss="showAlert = false">Продлите до 1 ноября, чтобы не потерять данные.</VkAlert>
     </section>
 
     <VkToastHost />
