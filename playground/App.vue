@@ -11,6 +11,8 @@ import { VkSwitch } from '../src'
 import { VkCheckbox } from '../src'
 import { VkBadge } from '../src'
 import { VkAlert } from '../src'
+import { VkSkeleton } from '../src'
+import { VkProgress } from '../src'
 // extra-imports
 
 type Country = { code: string; name: string }
@@ -122,6 +124,13 @@ const toast = useToast()
       <h2>Badge &amp; Alert</h2>
       <p><VkBadge>Черновик</VkBadge> <VkBadge tone="success" dot>Активен</VkBadge> <VkBadge tone="danger">Просрочен</VkBadge></p>
       <VkAlert v-if="showAlert" tone="warning" title="Подписка заканчивается" dismissible @dismiss="showAlert = false">Продлите до 1 ноября, чтобы не потерять данные.</VkAlert>
+    </section>
+
+    <section>
+      <h2>Skeleton &amp; Progress</h2>
+      <VkSkeleton :lines="3" />
+      <VkProgress label="Загрузка файла" :value="64" show-value />
+      <VkProgress label="Обработка" />
     </section>
 
     <VkToastHost />
