@@ -13,6 +13,8 @@ import { VkBadge } from '../src'
 import { VkAlert } from '../src'
 import { VkSkeleton } from '../src'
 import { VkProgress } from '../src'
+import { VkAccordion } from '../src'
+import { VkMenu } from '../src'
 // extra-imports
 
 type Country = { code: string; name: string }
@@ -131,6 +133,17 @@ const toast = useToast()
       <VkSkeleton :lines="3" />
       <VkProgress label="Загрузка файла" :value="64" show-value />
       <VkProgress label="Обработка" />
+    </section>
+
+    <section>
+      <h2>Accordion &amp; Menu</h2>
+      <VkAccordion :items="[{ key: 'pay', title: 'Как оплатить?' }, { key: 'refund', title: 'Как вернуть деньги?' }]">
+        <template #pay>Картой или по счёту для юрлиц.</template>
+        <template #refund>В течение 14 дней через поддержку.</template>
+      </VkAccordion>
+      <p>
+        <VkMenu label="Действия" :items="[{ key: 'edit', label: 'Редактировать' }, { key: 'archive', label: 'Архивировать', disabled: true }, { key: 'delete', label: 'Удалить', danger: true }]" @select="(k) => toast.show(k)" />
+      </p>
     </section>
 
     <VkToastHost />
