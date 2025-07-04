@@ -39,3 +39,9 @@ it('moves the window on scroll', async () => {
   await body.trigger('scroll')
   expect(w.get('.vk-table__body [role=row]').attributes('aria-rowindex')).toBe(String(5000 - 6 + 2))
 })
+
+it('emits rowClick with the row', async () => {
+  const w = setup()
+  await w.get('.vk-table__body [role=row]').trigger('click')
+  expect(w.emitted('rowClick')?.[0]?.[0]).toEqual(rows[0])
+})

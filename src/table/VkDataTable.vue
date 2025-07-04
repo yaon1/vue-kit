@@ -26,6 +26,7 @@ const props = withDefaults(
 )
 
 const sort = defineModel<SortState | null>('sort', { default: null })
+const emit = defineEmits<{ rowClick: [row: T, event: MouseEvent] }>()
 defineSlots<{ [K: `cell-${string}`]: (props: { row: T; value: unknown }) => unknown; empty(): unknown }>()
 
 const viewport = ref<HTMLElement>()
@@ -110,6 +111,7 @@ defineExpose({ scrollToIndex: (i: number) => viewport.value?.scrollTo({ top: i *
             role="row"
             :aria-rowindex="index + 2"
             :style="{ gridTemplateColumns: template, height: `${rowHeight}px` }"
+            @click="emit('rowClick', row, $event)"
           >
             <div
               v-for="column in columns"
