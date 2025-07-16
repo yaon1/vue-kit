@@ -45,3 +45,18 @@ it('emits rowClick with the row', async () => {
   await w.get('.vk-table__body [role=row]').trigger('click')
   expect(w.emitted('rowClick')?.[0]?.[0]).toEqual(rows[0])
 })
+
+it('selects rows and toggles all with an indeterminate header', async () => {
+  const small = rows.slice(0, 3)
+  const w = mount(VkDataTable<Row>, {
+    props: { rows: small, columns, rowKey: 'id', caption: 'Users', selectable: true, selected: [1], 'onUpdate:selected': () => {} },
+  })
+  const header = w.get('[aria-label="Select all rows"]').element as HTMLInputElement
+  expect(header.indeterminate).toBe(true)
+  expect(w.findAll('.vk-table__body [role=row]')[1]!.attributes('aria-selected')).toBe('true')
+
+  await w.get('[aria-label="Select row 1"]').trigger('change')
+  expect(w.emitted('update:selected')?.[0]).toEqual([[1, 0]])
+  await w.get('[aria-label="Select all rows"]').trigger('change')
+  expect(w.emitted('update:selected')?.[1]).toEqual([[0, 1, 2]])
+})

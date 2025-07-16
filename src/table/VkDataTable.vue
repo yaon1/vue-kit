@@ -21,11 +21,14 @@ const props = withDefaults(
     caption: string
     height?: number
     rowHeight?: number
+    /** Show a checkbox column bound to v-model:selected (row keys). */
+    selectable?: boolean
   }>(),
-  { height: 400, rowHeight: 40 },
+  { height: 400, rowHeight: 40, selectable: false },
 )
 
 const sort = defineModel<SortState | null>('sort', { default: null })
+const selected = defineModel<unknown[]>('selected', { default: () => [] })
 const emit = defineEmits<{ rowClick: [row: T, event: MouseEvent] }>()
 defineSlots<{ [K: `cell-${string}`]: (props: { row: T; value: unknown }) => unknown; empty(): unknown }>()
 
@@ -47,7 +50,20 @@ const { scrollTop, range, totalHeight, offset } = useVirtualList(
 const visible = computed(() =>
   sorted.value.slice(range.value.start, range.value.end).map((row, i) => ({ row, index: range.value.start + i })),
 )
-const template = computed(() => props.columns.map((c) => c.width ?? 'minmax(0, 1fr)').join(' '))
+const template = computed(() => (props.selectable ? '44px ' : '') + props.columns.map((c) => c.width ?? 'minmax(0, 1fr)').join(' '))
+
+const selectedSet = computed(() => new Set(selected.value))
+const allSelected = computed(() => props.rows.length > 0 && props.rows.every((r) => selectedSet.value.has(r[props.rowKey])))
+const someSelected = computed(() => !allSelected.value && props.rows.some((r) => selectedSet.value.has(r[props.rowKey])))
+
+function toggleRow(row: T) {
+  const key = row[props.rowKey]
+  selected.value = selectedSet.value.has(key) ? selected.value.filter((k) => k !== key) : [...selected.value, key]
+}
+
+function toggleAll() {
+  selected.value = allSelected.value ? [] : props.rows.map((r) => r[props.rowKey])
+}
 
 function ariaSort(key: string): 'ascending' | 'descending' | 'none' {
   if (sort.value?.key !== key) return 'none'
@@ -75,6 +91,15 @@ defineExpose({ scrollToIndex: (i: number) => viewport.value?.scrollTo({ top: i *
   <div class="vk-table" role="table" :aria-label="caption" :aria-rowcount="sorted.length + 1">
     <div class="vk-table__head" role="rowgroup">
       <div class="vk-table__row" role="row" aria-rowindex="1" :style="{ gridTemplateColumns: template }">
+        <div v-if="selectable" role="columnheader" class="vk-table__th vk-table__select">
+          <input
+            type="checkbox"
+            aria-label="Select all rows"
+            :checked="allSelected"
+            :indeterminate="someSelected"
+            @change="toggleAll"
+          />
+        </div>
         <div
           v-for="column in columns"
           :key="column.key"
@@ -111,8 +136,12 @@ defineExpose({ scrollToIndex: (i: number) => viewport.value?.scrollTo({ top: i *
             role="row"
             :aria-rowindex="index + 2"
             :style="{ gridTemplateColumns: template, height: `${rowHeight}px` }"
+            :aria-selected="selectable ? selectedSet.has(row[rowKey]) : undefined"
             @click="emit('rowClick', row, $event)"
           >
+            <div v-if="selectable" role="cell" class="vk-table__td vk-table__select" @click.stop>
+              <input type="checkbox" :aria-label="`Select row ${index + 1}`" :checked="selectedSet.has(row[rowKey])" @change="toggleRow(row)" />
+            </div>
             <div
               v-for="column in columns"
               :key="column.key"
@@ -159,5 +188,8 @@ defineExpose({ scrollToIndex: (i: number) => viewport.value?.scrollTo({ top: i *
 }
 .vk-table__sort:focus-visible { box-shadow: var(--vk-focus); }
 .vk-table__arrow { font-size: 10px; opacity: 0.7; }
+.vk-table__select { display: flex; align-items: center; justify-content: center; padding: 0; }
+.vk-table__select input { accent-color: var(--vk-accent); }
+.vk-table__row[aria-selected='true'] { background: color-mix(in srgb, var(--vk-accent) 8%, transparent); }
 .vk-table__empty { padding: 32px; text-align: center; color: var(--vk-muted); }
 </style>
