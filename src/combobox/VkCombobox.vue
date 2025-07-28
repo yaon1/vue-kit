@@ -10,6 +10,10 @@ const props = withDefaults(
     placeholder?: string
     emptyText?: string
     clearable?: boolean
+    /** Show a loading row, e.g. while `search` results are being fetched. */
+    loading?: boolean
+    /** Skip client-side filtering; filter on the server in a `search` handler instead. */
+    remote?: boolean
   }>(),
   {
     getLabel: (option: T) => String(option),
@@ -17,10 +21,13 @@ const props = withDefaults(
     placeholder: '',
     emptyText: 'No results',
     clearable: false,
+    loading: false,
+    remote: false,
   },
 )
 
 const model = defineModel<T | null>({ default: null })
+const emit = defineEmits<{ search: [query: string] }>()
 
 const id = useId()
 const listboxId = `${id}-listbox`
@@ -29,6 +36,7 @@ const open = ref(false)
 const active = ref(-1)
 
 const filtered = computed(() => {
+  if (props.remote) return props.options
   const q = query.value.trim().toLowerCase()
   if (q === '' || (model.value !== null && props.getLabel(model.value) === query.value)) return props.options
   const match = props.filter ?? ((o: T, s: string) => props.getLabel(o).toLowerCase().includes(s))
@@ -90,6 +98,7 @@ function onKeydown(event: KeyboardEvent): void {
 }
 
 function onInput(): void {
+  emit('search', query.value)
   open.value = true
   if (query.value === '') model.value = null
 }
@@ -150,7 +159,8 @@ function onBlur(): void {
       >
         <slot name="option" :option="option" :active="index === active">{{ getLabel(option) }}</slot>
       </li>
-      <li v-if="filtered.length === 0" class="vk-combobox__empty" role="presentation">{{ emptyText }}</li>
+      <li v-if="loading" class="vk-combobox__empty" role="presentation" aria-live="polite">Loading…</li>
+      <li v-else-if="filtered.length === 0" class="vk-combobox__empty" role="presentation">{{ emptyText }}</li>
     </ul>
   </div>
 </template>

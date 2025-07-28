@@ -47,4 +47,14 @@ describe('VkCombobox', () => {
     await w.get('[aria-label="Clear selection"]').trigger('click')
     expect(w.emitted('update:modelValue')?.[0]).toEqual([null])
   })
+
+  it('emits search and skips local filtering in remote mode', async () => {
+    const w = mount(VkCombobox<string>, { props: { options: ['Server result'], label: 'City', remote: true, loading: false } })
+    await w.get('input').setValue('zz')
+    expect(w.emitted('search')?.at(-1)).toEqual(['zz'])
+    expect(w.findAll('[role=option]').map((o) => o.text())).toEqual(['Server result'])
+
+    await w.setProps({ loading: true })
+    expect(w.get('.vk-combobox__empty').text()).toBe('Loading…')
+  })
 })
