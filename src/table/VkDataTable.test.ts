@@ -67,3 +67,11 @@ it('shows skeleton rows while loading', () => {
   expect(w.findAll('.vk-table__loading .vk-table__row')).toHaveLength(3)
   expect(w.find('.vk-table__empty').exists()).toBe(false)
 })
+
+it('renders a footer slot with the sorted rows', () => {
+  const w = mount(VkDataTable<Row>, {
+    props: { rows: rows.slice(0, 4), columns, rowKey: 'id', caption: 'Users' },
+    slots: { footer: '<template #footer="{ rows }">Итого: {{ rows.length }}</template>' },
+  })
+  expect(w.get('.vk-table__footer').text()).toBe('Итого: 4')
+})

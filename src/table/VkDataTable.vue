@@ -32,7 +32,11 @@ const props = withDefaults(
 const sort = defineModel<SortState | null>('sort', { default: null })
 const selected = defineModel<unknown[]>('selected', { default: () => [] })
 const emit = defineEmits<{ rowClick: [row: T, event: MouseEvent] }>()
-defineSlots<{ [K: `cell-${string}`]: (props: { row: T; value: unknown }) => unknown; empty(): unknown }>()
+defineSlots<{
+  [K: `cell-${string}`]: (props: { row: T; value: unknown }) => unknown
+  empty(): unknown
+  footer(props: { rows: readonly T[] }): unknown
+}>()
 
 const viewport = ref<HTMLElement>()
 const viewportHeight = ref(props.height)
@@ -162,6 +166,7 @@ defineExpose({ scrollToIndex: (i: number) => viewport.value?.scrollTo({ top: i *
         </div>
       </div>
     </div>
+    <div v-if="$slots.footer" class="vk-table__footer"><slot name="footer" :rows="sorted" /></div>
   </div>
 </template>
 
@@ -200,5 +205,6 @@ defineExpose({ scrollToIndex: (i: number) => viewport.value?.scrollTo({ top: i *
 .vk-table__row[aria-selected='true'] { background: color-mix(in srgb, var(--vk-accent) 8%, transparent); }
 .vk-table__shimmer { display: block; height: 10px; border-radius: 4px; background: var(--vk-surface); animation: vk-table-pulse 1.2s ease-in-out infinite; }
 @keyframes vk-table-pulse { 50% { opacity: 0.5; } }
+.vk-table__footer { padding: 10px 12px; border-top: 1px solid var(--vk-border); background: var(--vk-surface); font-size: 13px; }
 .vk-table__empty { padding: 32px; text-align: center; color: var(--vk-muted); }
 </style>
