@@ -60,3 +60,10 @@ it('selects rows and toggles all with an indeterminate header', async () => {
   await w.get('[aria-label="Select all rows"]').trigger('change')
   expect(w.emitted('update:selected')?.[1]).toEqual([[0, 1, 2]])
 })
+
+it('shows skeleton rows while loading', () => {
+  const w = mount(VkDataTable<Row>, { props: { rows: [], columns, rowKey: 'id', caption: 'Users', loading: true, height: 120, rowHeight: 40 } })
+  expect(w.get('[role=table]').attributes('aria-busy')).toBe('true')
+  expect(w.findAll('.vk-table__loading .vk-table__row')).toHaveLength(3)
+  expect(w.find('.vk-table__empty').exists()).toBe(false)
+})

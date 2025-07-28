@@ -23,8 +23,10 @@ const props = withDefaults(
     rowHeight?: number
     /** Show a checkbox column bound to v-model:selected (row keys). */
     selectable?: boolean
+    /** Shows skeleton rows and marks the table busy. */
+    loading?: boolean
   }>(),
-  { height: 400, rowHeight: 40, selectable: false },
+  { height: 400, rowHeight: 40, selectable: false, loading: false },
 )
 
 const sort = defineModel<SortState | null>('sort', { default: null })
@@ -88,7 +90,7 @@ defineExpose({ scrollToIndex: (i: number) => viewport.value?.scrollTo({ top: i *
 </script>
 
 <template>
-  <div class="vk-table" role="table" :aria-label="caption" :aria-rowcount="sorted.length + 1">
+  <div class="vk-table" role="table" :aria-label="caption" :aria-rowcount="sorted.length + 1" :aria-busy="loading || undefined">
     <div class="vk-table__head" role="rowgroup">
       <div class="vk-table__row" role="row" aria-rowindex="1" :style="{ gridTemplateColumns: template }">
         <div v-if="selectable" role="columnheader" class="vk-table__th vk-table__select">
@@ -126,7 +128,12 @@ defineExpose({ scrollToIndex: (i: number) => viewport.value?.scrollTo({ top: i *
       :style="{ height: `${height}px` }"
       @scroll.passive="scrollTop = ($event.target as HTMLElement).scrollTop"
     >
-      <div v-if="sorted.length === 0" class="vk-table__empty"><slot name="empty">No data</slot></div>
+      <div v-if="loading" class="vk-table__loading">
+        <div v-for="i in Math.min(8, Math.ceil(height / rowHeight))" :key="i" class="vk-table__row" :style="{ gridTemplateColumns: template, height: `${rowHeight}px` }">
+          <div v-for="c in columns.length + (selectable ? 1 : 0)" :key="c" class="vk-table__td"><span class="vk-table__shimmer" /></div>
+        </div>
+      </div>
+      <div v-else-if="sorted.length === 0" class="vk-table__empty"><slot name="empty">No data</slot></div>
       <div v-else :style="{ height: `${totalHeight}px`, position: 'relative' }">
         <div :style="{ transform: `translateY(${offset}px)` }">
           <div
@@ -191,5 +198,7 @@ defineExpose({ scrollToIndex: (i: number) => viewport.value?.scrollTo({ top: i *
 .vk-table__select { display: flex; align-items: center; justify-content: center; padding: 0; }
 .vk-table__select input { accent-color: var(--vk-accent); }
 .vk-table__row[aria-selected='true'] { background: color-mix(in srgb, var(--vk-accent) 8%, transparent); }
+.vk-table__shimmer { display: block; height: 10px; border-radius: 4px; background: var(--vk-surface); animation: vk-table-pulse 1.2s ease-in-out infinite; }
+@keyframes vk-table-pulse { 50% { opacity: 0.5; } }
 .vk-table__empty { padding: 32px; text-align: center; color: var(--vk-muted); }
 </style>
