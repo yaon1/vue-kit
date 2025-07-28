@@ -41,4 +41,10 @@ describe('VkCombobox', () => {
     expect((input.element as HTMLInputElement).value).toBe('Cherry')
     w.unmount()
   })
+
+  it('clears the selection', async () => {
+    const w = mount(VkCombobox<string>, { props: { options: fruits, label: 'Fruit', clearable: true, modelValue: 'Apple', 'onUpdate:modelValue': () => {} } })
+    await w.get('[aria-label="Clear selection"]').trigger('click')
+    expect(w.emitted('update:modelValue')?.[0]).toEqual([null])
+  })
 })

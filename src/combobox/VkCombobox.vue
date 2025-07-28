@@ -9,12 +9,14 @@ const props = withDefaults(
     filter?: (option: T, query: string) => boolean
     placeholder?: string
     emptyText?: string
+    clearable?: boolean
   }>(),
   {
     getLabel: (option: T) => String(option),
     filter: undefined,
     placeholder: '',
     emptyText: 'No results',
+    clearable: false,
   },
 )
 
@@ -92,6 +94,11 @@ function onInput(): void {
   if (query.value === '') model.value = null
 }
 
+function clear(): void {
+  model.value = null
+  query.value = ''
+}
+
 function onBlur(): void {
   open.value = false
   // Revert free text that doesn't match a selection.
@@ -119,6 +126,16 @@ function onBlur(): void {
       @focus="open = true"
       @blur="onBlur"
     />
+    <button
+      v-if="clearable && model !== null"
+      type="button"
+      class="vk-combobox__clear"
+      aria-label="Clear selection"
+      @mousedown.prevent
+      @click="clear"
+    >
+      ×
+    </button>
     <ul v-show="open" :id="listboxId" class="vk-combobox__listbox" role="listbox" :aria-label="label">
       <li
         v-for="(option, index) in filtered"
@@ -152,6 +169,16 @@ function onBlur(): void {
   font: inherit;
 }
 .vk-combobox__input:focus { outline: none; border-color: var(--vk-accent); box-shadow: var(--vk-focus); }
+.vk-combobox__clear {
+  position: absolute;
+  right: 6px;
+  bottom: 6px;
+  border: 0;
+  background: none;
+  color: var(--vk-muted);
+  font-size: 18px;
+  cursor: pointer;
+}
 .vk-combobox__listbox {
   position: absolute;
   z-index: 10;
