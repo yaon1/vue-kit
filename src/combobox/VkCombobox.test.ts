@@ -57,4 +57,14 @@ describe('VkCombobox', () => {
     await w.setProps({ loading: true })
     expect(w.get('.vk-combobox__empty').text()).toBe('Loading…')
   })
+
+  it('skips disabled options with arrows and refuses to select them', async () => {
+    const w = mount(VkCombobox<string>, { props: { options: fruits, label: 'Fruit', isDisabled: (f: string) => f === 'Apricot' } })
+    const input = w.get('input')
+    await input.setValue('a')
+    await input.trigger('keydown', { key: 'ArrowDown' })
+    expect(w.get(`[id="${input.attributes('aria-activedescendant')}"]`).text()).toBe('Banana')
+    await w.findAll('[role=option]')[1]!.trigger('mousedown')
+    expect(w.emitted('update:modelValue')).toBeUndefined()
+  })
 })

@@ -14,6 +14,7 @@ const props = withDefaults(
     loading?: boolean
     /** Skip client-side filtering; filter on the server in a `search` handler instead. */
     remote?: boolean
+    isDisabled?: (option: T) => boolean
   }>(),
   {
     getLabel: (option: T) => String(option),
@@ -23,6 +24,7 @@ const props = withDefaults(
     clearable: false,
     loading: false,
     remote: false,
+    isDisabled: () => false,
   },
 )
 
@@ -52,7 +54,7 @@ function optionId(index: number): string {
 
 function select(index: number): void {
   const option = filtered.value[index]
-  if (option === undefined) return
+  if (option === undefined || props.isDisabled(option)) return
   model.value = option
   query.value = props.getLabel(option)
   open.value = false
@@ -65,7 +67,13 @@ function move(delta: number): void {
   }
   const count = filtered.value.length
   if (count === 0) return
-  active.value = (active.value + delta + count) % count
+  // Step over disabled options; give up after a full lap if everything is disabled.
+  let next = active.value
+  for (let i = 0; i < count; i++) {
+    next = (next + delta + count) % count
+    if (!props.isDisabled(filtered.value[next] as T)) break
+  }
+  active.value = next
   document.getElementById(optionId(active.value))?.scrollIntoView?.({ block: 'nearest' })
 }
 
@@ -154,6 +162,7 @@ function onBlur(): void {
         class="vk-combobox__option"
         :class="{ 'is-active': index === active }"
         :aria-selected="option === model"
+        :aria-disabled="isDisabled(option) || undefined"
         @mousedown.prevent="select(index)"
         @mousemove="active = index"
       >
@@ -207,5 +216,6 @@ function onBlur(): void {
 .vk-combobox__option { padding: 6px 8px; border-radius: 4px; cursor: pointer; }
 .vk-combobox__option.is-active { background: var(--vk-surface); }
 .vk-combobox__option[aria-selected='true'] { font-weight: 600; color: var(--vk-accent); }
+.vk-combobox__option[aria-disabled='true'] { opacity: 0.45; cursor: not-allowed; }
 .vk-combobox__empty { padding: 6px 8px; color: var(--vk-muted); }
 </style>
