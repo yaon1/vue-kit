@@ -18,6 +18,8 @@ export interface Toast extends Required<Omit<ToastOptions, 'action'>> {
 const toasts = shallowReactive<Toast[]>([])
 const timers = new Map<number, ReturnType<typeof setTimeout>>()
 let nextId = 1
+/** Oldest toasts are dropped beyond this many, so a burst of errors can't fill the screen. */
+const MAX_VISIBLE = 5
 
 function dismiss(id: number): void {
   clearTimeout(timers.get(id))
@@ -35,6 +37,7 @@ function show(message: string, options: ToastOptions = {}): number {
     action: options.action,
   }
   toasts.push(toast)
+  while (toasts.length > MAX_VISIBLE) dismiss(toasts[0]!.id)
   if (toast.duration > 0) timers.set(toast.id, setTimeout(() => dismiss(toast.id), toast.duration))
   return toast.id
 }
