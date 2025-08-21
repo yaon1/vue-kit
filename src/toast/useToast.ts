@@ -42,6 +42,24 @@ function show(message: string, options: ToastOptions = {}): number {
   return toast.id
 }
 
+/**
+ * Shows a pending toast that turns into success or error when the promise settles.
+ * Resolves/rejects with the original promise result.
+ */
+async function promise<R>(task: Promise<R>, messages: { loading: string; success: string | ((r: R) => string); error: string | ((e: unknown) => string) }): Promise<R> {
+  const id = show(messages.loading, { duration: 0 })
+  try {
+    const result = await task
+    dismiss(id)
+    show(typeof messages.success === 'function' ? messages.success(result) : messages.success, { kind: 'success' })
+    return result
+  } catch (error) {
+    dismiss(id)
+    show(typeof messages.error === 'function' ? messages.error(error) : messages.error, { kind: 'error' })
+    throw error
+  }
+}
+
 function clear(): void {
   for (const t of [...toasts]) dismiss(t.id)
 }
@@ -52,6 +70,7 @@ export function useToast() {
     show,
     dismiss,
     clear,
+    promise,
     success: (message: string, o?: Omit<ToastOptions, 'kind'>) => show(message, { ...o, kind: 'success' }),
     error: (message: string, o?: Omit<ToastOptions, 'kind'>) => show(message, { ...o, kind: 'error' }),
   }

@@ -29,4 +29,14 @@ describe('useToast', () => {
     for (let i = 1; i <= 7; i++) t.show(`#${i}`, { duration: 0 })
     expect(t.toasts.map((x) => x.message)).toEqual(['#3', '#4', '#5', '#6', '#7'])
   })
+
+  it('tracks a promise from loading to success or error', async () => {
+    const ok = t.promise(Promise.resolve(3), { loading: 'Сохраняю…', success: (n) => `Сохранено: ${n}`, error: 'Ошибка' })
+    expect(t.toasts[0]?.message).toBe('Сохраняю…')
+    await expect(ok).resolves.toBe(3)
+    expect(t.toasts.map((x) => [x.kind, x.message])).toEqual([['success', 'Сохранено: 3']])
+
+    await expect(t.promise(Promise.reject(new Error('x')), { loading: '…', success: 'ok', error: 'Не удалось' })).rejects.toThrow('x')
+    expect(t.toasts.at(-1)?.kind).toBe('error')
+  })
 })
