@@ -39,4 +39,18 @@ describe('useToast', () => {
     await expect(t.promise(Promise.reject(new Error('x')), { loading: '…', success: 'ok', error: 'Не удалось' })).rejects.toThrow('x')
     expect(t.toasts.at(-1)?.kind).toBe('error')
   })
+
+  it('pauses the timer and resumes with the remaining time', () => {
+    vi.useFakeTimers()
+    const id = t.show('Hover me', { duration: 1000 })
+    vi.advanceTimersByTime(600)
+    t.pause(id)
+    vi.advanceTimersByTime(5000)
+    expect(t.toasts).toHaveLength(1)
+    t.resume(id)
+    vi.advanceTimersByTime(399)
+    expect(t.toasts).toHaveLength(1)
+    vi.advanceTimersByTime(1)
+    expect(t.toasts).toHaveLength(0)
+  })
 })

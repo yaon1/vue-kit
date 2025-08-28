@@ -5,7 +5,7 @@ withDefaults(defineProps<{ position?: 'top-right' | 'bottom-right' | 'bottom-cen
   position: 'bottom-right',
 })
 
-const { toasts, dismiss } = useToast()
+const { toasts, dismiss, pause, resume } = useToast()
 </script>
 
 <template>
@@ -18,6 +18,10 @@ const { toasts, dismiss } = useToast()
         :class="`vk-toast--${toast.kind}`"
         :role="toast.kind === 'error' ? 'alert' : 'status'"
         :aria-live="toast.kind === 'error' ? 'assertive' : 'polite'"
+        @mouseenter="pause(toast.id)"
+        @mouseleave="resume(toast.id)"
+        @focusin="pause(toast.id)"
+        @focusout="resume(toast.id)"
       >
         <span class="vk-toast__message">{{ toast.message }}</span>
         <button

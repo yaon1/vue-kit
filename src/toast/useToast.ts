@@ -21,7 +21,26 @@ let nextId = 1
 /** Oldest toasts are dropped beyond this many, so a burst of errors can't fill the screen. */
 const MAX_VISIBLE = 5
 
+const remaining = new Map<number, { left: number; startedAt: number }>()
+
+/** Stops the auto-dismiss timer, e.g. while the user hovers or focuses the toast. */
+function pause(id: number): void {
+  const entry = remaining.get(id)
+  if (!entry || !timers.has(id)) return
+  clearTimeout(timers.get(id))
+  timers.delete(id)
+  entry.left -= Date.now() - entry.startedAt
+}
+
+function resume(id: number): void {
+  const entry = remaining.get(id)
+  if (!entry || timers.has(id)) return
+  entry.startedAt = Date.now()
+  timers.set(id, setTimeout(() => dismiss(id), Math.max(0, entry.left)))
+}
+
 function dismiss(id: number): void {
+  remaining.delete(id)
   clearTimeout(timers.get(id))
   timers.delete(id)
   const index = toasts.findIndex((t) => t.id === id)
@@ -38,7 +57,10 @@ function show(message: string, options: ToastOptions = {}): number {
   }
   toasts.push(toast)
   while (toasts.length > MAX_VISIBLE) dismiss(toasts[0]!.id)
-  if (toast.duration > 0) timers.set(toast.id, setTimeout(() => dismiss(toast.id), toast.duration))
+  if (toast.duration > 0) {
+    remaining.set(toast.id, { left: toast.duration, startedAt: Date.now() })
+    timers.set(toast.id, setTimeout(() => dismiss(toast.id), toast.duration))
+  }
   return toast.id
 }
 
@@ -71,6 +93,8 @@ export function useToast() {
     dismiss,
     clear,
     promise,
+    pause,
+    resume,
     success: (message: string, o?: Omit<ToastOptions, 'kind'>) => show(message, { ...o, kind: 'success' }),
     error: (message: string, o?: Omit<ToastOptions, 'kind'>) => show(message, { ...o, kind: 'error' }),
   }
