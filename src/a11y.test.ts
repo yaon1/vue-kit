@@ -2,7 +2,7 @@ import { mount } from '@vue/test-utils'
 import axe from 'axe-core'
 import { describe, expect, it } from 'vitest'
 import { h, type Component } from 'vue'
-import { VkButton, VkCombobox, VkDataTable, VkInput, VkPagination, VkTabs } from './index'
+import { VkAccordion, VkAlert, VkButton, VkCombobox, VkDataTable, VkInput, VkMenu, VkPagination, VkProgress, VkSwitch, VkTabs } from './index'
 
 // Runs axe-core against rendered components; color-contrast needs real layout, so it's skipped in jsdom.
 async function violations(component: Component, props: Record<string, unknown> = {}, slots: Record<string, () => unknown> = {}) {
@@ -37,5 +37,22 @@ describe('accessibility', () => {
   it('data table', async () => {
     const rows = [{ id: 1, name: 'Ada' }]
     expect(await violations(VkDataTable as unknown as Component, { rows, rowKey: 'id', caption: 'People', columns: [{ key: 'name', label: 'Name', sortable: true }] })).toEqual([])
+  })
+
+  it('switch', async () => {
+    expect(await violations(VkSwitch, { label: 'Notifications' })).toEqual([])
+  })
+
+  it('accordion', async () => {
+    expect(await violations(VkAccordion, { items: [{ key: 'q', title: 'Question' }], modelValue: ['q'] }, { q: () => 'Answer' })).toEqual([])
+  })
+
+  it('menu', async () => {
+    expect(await violations(VkMenu, { label: 'Actions', items: [{ key: 'e', label: 'Edit' }] })).toEqual([])
+  })
+
+  it('progress and alert', async () => {
+    expect(await violations(VkProgress, { label: 'Upload', value: 40 })).toEqual([])
+    expect(await violations(VkAlert, { tone: 'danger', title: 'Error' }, { default: () => 'Failed' })).toEqual([])
   })
 })
