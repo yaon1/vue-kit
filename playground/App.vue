@@ -15,6 +15,8 @@ import { VkSkeleton } from '../src'
 import { VkProgress } from '../src'
 import { VkAccordion } from '../src'
 import { VkMenu } from '../src'
+import { VkSelect } from '../src'
+import { useTheme } from '../src'
 // extra-imports
 
 type Country = { code: string; name: string }
@@ -44,12 +46,16 @@ const page = ref(1)
 const notify = ref(true)
 const agree = ref(false)
 const showAlert = ref(true)
+const theme = useTheme()
 const toast = useToast()
 </script>
 
 <template>
   <main>
-    <h1>vue-kit</h1>
+    <header class="pg-header">
+      <h1>vue-kit</h1>
+      <VkSelect v-model="theme.preference.value" label="Тема" :options="[{ value: 'system', label: 'Системная' }, { value: 'light', label: 'Светлая' }, { value: 'dark', label: 'Тёмная' }]" />
+    </header>
 
     <section>
       <h2>Combobox</h2>
@@ -154,5 +160,6 @@ const toast = useToast()
 body { margin: 0; background: var(--vk-bg); color: var(--vk-text); font-family: var(--vk-font); }
 main { max-width: 880px; margin: 0 auto; padding: 24px 16px; }
 section { margin-block: 32px; }
+.pg-header { display: flex; justify-content: space-between; align-items: end; gap: 16px; }
 button { margin-right: 8px; }
 </style>
