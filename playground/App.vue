@@ -17,6 +17,8 @@ import { VkAccordion } from '../src'
 import { VkMenu } from '../src'
 import { VkSelect } from '../src'
 import { useTheme } from '../src'
+import { VkInput } from '../src'
+import { VkTextarea } from '../src'
 // extra-imports
 
 type Country = { code: string; name: string }
@@ -47,6 +49,8 @@ const notify = ref(true)
 const agree = ref(false)
 const showAlert = ref(true)
 const theme = useTheme()
+const email = ref('')
+const comment = ref('')
 const toast = useToast()
 </script>
 
@@ -152,6 +156,15 @@ const toast = useToast()
       </p>
     </section>
 
+    <section>
+      <h2>Form fields</h2>
+      <form class="pg-form" @submit.prevent="toast.success('Отправлено')">
+        <VkInput v-model="email" label="Email" type="email" required hint="Пришлём ссылку для входа" :error="email && !email.includes('@') ? 'Нужен адрес с @' : undefined" />
+        <VkTextarea v-model="comment" label="Комментарий" />
+        <VkButton type="submit" variant="primary">Отправить</VkButton>
+      </form>
+    </section>
+
     <VkToastHost />
   </main>
 </template>
@@ -160,6 +173,7 @@ const toast = useToast()
 body { margin: 0; background: var(--vk-bg); color: var(--vk-text); font-family: var(--vk-font); }
 main { max-width: 880px; margin: 0 auto; padding: 24px 16px; }
 section { margin-block: 32px; }
+.pg-form { display: grid; gap: 12px; max-width: 420px; }
 .pg-header { display: flex; justify-content: space-between; align-items: end; gap: 16px; }
 button { margin-right: 8px; }
 </style>
