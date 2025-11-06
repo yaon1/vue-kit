@@ -41,6 +41,8 @@ const columns: Column<Order>[] = [
   { key: 'createdAt', label: 'Created', sortable: true, format: (v) => (v as Date).toLocaleString() },
 ]
 const sort = ref<SortState | null>(null)
+const selected = ref<unknown[]>([])
+const tableLoading = ref(false)
 
 const dialogOpen = ref(false)
 const tab = ref('general')
@@ -71,7 +73,12 @@ const toast = useToast()
 
     <section>
       <h2>DataTable — {{ orders.length.toLocaleString() }} rows</h2>
-      <VkDataTable v-model:sort="sort" :rows="orders" :columns="columns" row-key="id" caption="Orders" :height="360">
+      <p>
+        <VkSwitch v-model="tableLoading" label="Загрузка" />
+        Выбрано: {{ selected.length }}
+      </p>
+      <VkDataTable v-model:sort="sort" v-model:selected="selected" selectable :loading="tableLoading" :rows="orders" :columns="columns" row-key="id" caption="Orders" :height="360">
+        <template #footer="{ rows }">Всего строк: {{ rows.length.toLocaleString() }}</template>
         <template #cell-customer="{ row }"><a href="#" @click.prevent="toast.show(`Open ${row.customer}`)">{{ row.customer }}</a></template>
       </VkDataTable>
     </section>
