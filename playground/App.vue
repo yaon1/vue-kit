@@ -26,6 +26,21 @@ const countries: Country[] = ['DE Germany', 'FR France', 'GE Georgia', 'JP Japan
   .map((s) => ({ code: s.slice(0, 2), name: s.slice(3) }))
 const country = ref<Country | null>(null)
 
+// Simulated server search with latency.
+const allCities = ['Москва', 'Санкт-Петербург', 'Казань', 'Бангкок', 'Пхукет', 'Алматы', 'Тбилиси']
+const city = ref<string | null>(null)
+const cities = ref<string[]>([])
+const citiesLoading = ref(false)
+let searchTimer: ReturnType<typeof setTimeout> | undefined
+function searchCities(q: string) {
+  citiesLoading.value = true
+  clearTimeout(searchTimer)
+  searchTimer = setTimeout(() => {
+    cities.value = allCities.filter((c) => c.toLowerCase().includes(q.toLowerCase()))
+    citiesLoading.value = false
+  }, 400)
+}
+
 type Order = { id: number; customer: string; total: number; createdAt: Date }
 const orders: Order[] = Array.from({ length: 50_000 }, (_, i) => ({
   id: i + 1,
@@ -69,6 +84,7 @@ const toast = useToast()
         <template #option="{ option }"><b>{{ option.code }}</b> {{ option.name }}</template>
       </VkCombobox>
       <p>Selected: {{ country?.name ?? 'none' }}</p>
+      <VkCombobox v-model="city" :options="cities" :loading="citiesLoading" remote clearable label="Город (поиск на сервере)" @search="searchCities" />
     </section>
 
     <section>
