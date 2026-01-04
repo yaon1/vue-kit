@@ -35,3 +35,8 @@ it('closes from the close button and the backdrop only when dismissible', async 
   w.unmount()
   strict.unmount()
 })
+
+it('renders as a side drawer', () => {
+  const w = mount(VkDialog, { props: { title: 'Фильтры', placement: 'right' } })
+  expect(w.get('dialog').classes()).toContain('vk-dialog--right')
+})
