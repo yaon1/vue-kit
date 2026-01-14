@@ -8,3 +8,9 @@ it('renders tone and optional dot', () => {
   expect(w.find('.vk-badge__dot').exists()).toBe(true)
   expect(w.text()).toBe('Активен')
 })
+
+it('caps counts with max', () => {
+  expect(mount(VkBadge, { props: { count: 7 } }).text()).toBe('7')
+  expect(mount(VkBadge, { props: { count: 150 } }).text()).toBe('99+')
+  expect(mount(VkBadge, { props: { count: 12, max: 9 } }).text()).toBe('9+')
+})

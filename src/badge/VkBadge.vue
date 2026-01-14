@@ -1,14 +1,19 @@
 <script setup lang="ts">
-withDefaults(defineProps<{ tone?: 'neutral' | 'accent' | 'success' | 'warning' | 'danger'; dot?: boolean }>(), {
+import { computed } from 'vue'
+
+const props = withDefaults(defineProps<{ tone?: 'neutral' | 'accent' | 'success' | 'warning' | 'danger'; dot?: boolean; count?: number; max?: number }>(), {
   tone: 'neutral',
   dot: false,
+  count: undefined,
+  max: 99,
 })
+const countText = computed(() => (props.count === undefined ? null : props.count > props.max ? `${props.max}+` : String(props.count)))
 </script>
 
 <template>
   <span class="vk-badge" :class="`vk-badge--${tone}`">
     <span v-if="dot" class="vk-badge__dot" aria-hidden="true" />
-    <slot />
+    <slot>{{ countText }}</slot>
   </span>
 </template>
 
