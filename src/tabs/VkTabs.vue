@@ -7,7 +7,7 @@ export interface Tab {
   disabled?: boolean
 }
 
-const props = defineProps<{ tabs: readonly Tab[]; label: string }>()
+const props = withDefaults(defineProps<{ tabs: readonly Tab[]; label: string; orientation?: 'horizontal' | 'vertical' }>(), { orientation: 'horizontal' })
 const active = defineModel<string>({ required: true })
 defineSlots<Record<string, (props: { tab: Tab }) => unknown>>()
 
@@ -19,7 +19,8 @@ const enabled = computed(() => props.tabs.filter((t) => !t.disabled))
 async function onKeydown(event: KeyboardEvent) {
   const index = enabled.value.findIndex((t) => t.key === active.value)
   const last = enabled.value.length - 1
-  const next = { ArrowRight: index + 1, ArrowLeft: index - 1, Home: 0, End: last }[event.key]
+  const [prevKey, nextKey] = props.orientation === 'vertical' ? ['ArrowUp', 'ArrowDown'] : ['ArrowLeft', 'ArrowRight']
+  const next = { [nextKey]: index + 1, [prevKey]: index - 1, Home: 0, End: last }[event.key]
   if (next === undefined) return
   event.preventDefault()
   const tab = enabled.value[(next + enabled.value.length) % enabled.value.length]
@@ -31,8 +32,8 @@ async function onKeydown(event: KeyboardEvent) {
 </script>
 
 <template>
-  <div class="vk-tabs">
-    <div ref="list" class="vk-tabs__list" role="tablist" :aria-label="label" @keydown="onKeydown">
+  <div class="vk-tabs" :class="`vk-tabs--${orientation}`">
+    <div ref="list" class="vk-tabs__list" role="tablist" :aria-label="label" :aria-orientation="orientation" @keydown="onKeydown">
       <button
         v-for="tab in tabs"
         :id="`${id}-tab-${tab.key}`"
@@ -82,5 +83,10 @@ async function onKeydown(event: KeyboardEvent) {
 .vk-tabs__tab:disabled { opacity: 0.5; cursor: not-allowed; }
 .vk-tabs__tab:focus-visible { outline: none; box-shadow: var(--vk-focus); border-radius: 4px; }
 .vk-tabs__panel { padding: 16px 0; }
+.vk-tabs--vertical { display: flex; gap: 16px; }
+.vk-tabs--vertical .vk-tabs__list { flex-direction: column; border-bottom: 0; border-right: 1px solid var(--vk-border); }
+.vk-tabs--vertical .vk-tabs__tab { border-bottom: 0; border-right: 2px solid transparent; text-align: left; }
+.vk-tabs--vertical .vk-tabs__tab[aria-selected='true'] { border-right-color: var(--vk-accent); }
+.vk-tabs--vertical .vk-tabs__panel { padding: 0; flex: 1; }
 .vk-tabs__panel:focus-visible { outline: none; box-shadow: var(--vk-focus); }
 </style>

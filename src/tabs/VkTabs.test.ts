@@ -35,3 +35,12 @@ it('moves with arrow keys, skipping disabled tabs', async () => {
   expect(w.emitted('update:modelValue')?.[1]).toEqual(['general'])
   w.unmount()
 })
+
+it('uses up/down arrows when vertical', async () => {
+  const w = mount(VkTabs, { props: { tabs, label: 'Настройки', orientation: 'vertical', modelValue: 'general', 'onUpdate:modelValue': () => {} } })
+  expect(w.get('[role=tablist]').attributes('aria-orientation')).toBe('vertical')
+  await w.get('[role=tablist]').trigger('keydown', { key: 'ArrowRight' })
+  expect(w.emitted('update:modelValue')).toBeUndefined()
+  await w.get('[role=tablist]').trigger('keydown', { key: 'ArrowDown' })
+  expect(w.emitted('update:modelValue')?.[0]).toEqual(['security'])
+})
