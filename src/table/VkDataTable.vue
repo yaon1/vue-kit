@@ -11,6 +11,8 @@ export interface Column<R> {
   sortable?: boolean
   value?: (row: R) => unknown
   format?: (value: unknown, row: R) => string
+  /** Custom comparator for this column; defaults to natural ordering. */
+  compare?: (a: R, b: R) => number
 }
 
 const props = withDefaults(
@@ -47,7 +49,12 @@ function valueOf(row: T, key: string): unknown {
   return column?.value ? column.value(row) : row[key]
 }
 
-const sorted = computed(() => sortRows(props.rows, sort.value, valueOf))
+const sorted = computed(() => {
+  const compare = sort.value ? columnsByKey.value.get(sort.value.key)?.compare : undefined
+  if (!sort.value || !compare) return sortRows(props.rows, sort.value, valueOf)
+  const sign = sort.value.direction === 'asc' ? 1 : -1
+  return [...props.rows].sort((a, b) => sign * compare(a, b))
+})
 const { scrollTop, range, totalHeight, offset } = useVirtualList(
   computed(() => sorted.value.length),
   props.rowHeight,

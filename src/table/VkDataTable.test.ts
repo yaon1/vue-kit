@@ -75,3 +75,13 @@ it('renders a footer slot with the sorted rows', () => {
   })
   expect(w.get('.vk-table__footer').text()).toBe('Итого: 4')
 })
+
+it('uses a column comparator when given', async () => {
+  const priority = { low: 0, high: 2, medium: 1 } as const
+  type Task = { id: number; level: keyof typeof priority }
+  const tasks: Task[] = [{ id: 1, level: 'medium' }, { id: 2, level: 'high' }, { id: 3, level: 'low' }]
+  const w = mount(VkDataTable<Task>, {
+    props: { rows: tasks, rowKey: 'id', caption: 'Tasks', sort: { key: 'level', direction: 'asc' }, columns: [{ key: 'level', label: 'Level', sortable: true, compare: (a: Task, b: Task) => priority[a.level] - priority[b.level] }] },
+  })
+  expect(w.findAll('.vk-table__body [role=cell]').map((c) => c.text())).toEqual(['low', 'medium', 'high'])
+})
