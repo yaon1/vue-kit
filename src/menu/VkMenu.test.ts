@@ -42,3 +42,8 @@ it('closes on Escape and returns focus', async () => {
   expect(document.activeElement).toBe(w.get('.vk-menu__trigger').element)
   w.unmount()
 })
+
+it('renders custom item content through a slot', () => {
+  const w = mount(VkMenu, { props: { items, label: 'Действия' }, slots: { item: '<template #item="{ item }">★ {{ item.label }}</template>' } })
+  expect(w.findAll('[role=menuitem]')[0]!.text()).toBe('★ Редактировать')
+})

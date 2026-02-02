@@ -85,7 +85,7 @@ defineExpose({ show, close })
         @keydown.enter.prevent="choose(item)"
         @keydown.space.prevent="choose(item)"
       >
-        {{ item.label }}
+        <slot name="item" :item="item">{{ item.label }}</slot>
       </li>
     </ul>
   </div>
