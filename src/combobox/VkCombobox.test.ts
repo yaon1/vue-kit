@@ -67,4 +67,12 @@ describe('VkCombobox', () => {
     await w.findAll('[role=option]')[1]!.trigger('mousedown')
     expect(w.emitted('update:modelValue')).toBeUndefined()
   })
+
+  it('submits the selection through a hidden input', () => {
+    const w = mount(VkCombobox<{ id: number; title: string }>, {
+      props: { options: [{ id: 7, title: 'Seven' }], label: 'N', name: 'number_id', modelValue: { id: 7, title: 'Seven' }, getLabel: (o: { title: string }) => o.title, getValue: (o: { id: number }) => String(o.id) },
+    })
+    const hidden = w.get('input[type=hidden]')
+    expect([hidden.attributes('name'), (hidden.element as HTMLInputElement).value]).toEqual(['number_id', '7'])
+  })
 })

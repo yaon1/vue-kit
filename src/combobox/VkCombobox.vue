@@ -15,6 +15,9 @@ const props = withDefaults(
     /** Skip client-side filtering; filter on the server in a `search` handler instead. */
     remote?: boolean
     isDisabled?: (option: T) => boolean
+    /** Adds a hidden input so the selection is submitted with native forms. */
+    name?: string
+    getValue?: (option: T) => string
   }>(),
   {
     getLabel: (option: T) => String(option),
@@ -25,6 +28,8 @@ const props = withDefaults(
     loading: false,
     remote: false,
     isDisabled: () => false,
+    name: undefined,
+    getValue: undefined,
   },
 )
 
@@ -126,6 +131,7 @@ function onBlur(): void {
 <template>
   <div class="vk-combobox">
     <label :for="id" class="vk-combobox__label">{{ label }}</label>
+    <input v-if="name" type="hidden" :name="name" :value="model === null ? '' : (getValue ?? getLabel)(model)" />
     <input
       :id="id"
       v-model="query"
