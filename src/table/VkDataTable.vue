@@ -1,5 +1,5 @@
 <script setup lang="ts" generic="T extends Record<string, unknown>">
-import { computed, onBeforeUnmount, onMounted, ref, toRef } from 'vue'
+import { computed, onBeforeUnmount, onMounted, ref } from 'vue'
 import { nextSort, sortRows, type SortState } from './sort'
 import { useVirtualList } from './useVirtualList'
 

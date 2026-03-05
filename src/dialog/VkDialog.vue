@@ -26,8 +26,15 @@ watch(
   (value) => {
     const el = dialog.value
     if (!el) return
-    if (value && !el.open) el.showModal?.() ?? el.setAttribute('open', '')
-    if (!value && el.open) el.close?.() ?? el.removeAttribute('open')
+    // jsdom lacks showModal/close, so fall back to toggling the attribute.
+    if (value && !el.open) {
+      if (typeof el.showModal === 'function') el.showModal()
+      else el.setAttribute('open', '')
+    }
+    if (!value && el.open) {
+      if (typeof el.close === 'function') el.close()
+      else el.removeAttribute('open')
+    }
   },
   { flush: 'post' },
 )

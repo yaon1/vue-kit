@@ -9,7 +9,7 @@ export interface MenuItem {
   danger?: boolean
 }
 
-const props = defineProps<{ items: readonly MenuItem[]; label: string }>()
+defineProps<{ items: readonly MenuItem[]; label: string }>()
 const emit = defineEmits<{ select: [key: string] }>()
 
 const id = useId()
