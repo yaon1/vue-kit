@@ -12,9 +12,31 @@ defineProps<{ title: string; description?: string; icon?: string }>()
 </template>
 
 <style>
-.vk-empty { display: grid; justify-items: center; gap: 8px; padding: 40px 16px; text-align: center; font-family: var(--vk-font); color: var(--vk-text); }
-.vk-empty__icon { font-size: 36px; opacity: 0.7; }
-.vk-empty__title { margin: 0; font-size: 17px; }
-.vk-empty__description { margin: 0; max-width: 42ch; color: var(--vk-muted); }
-.vk-empty__actions { margin-top: 8px; display: flex; gap: 8px; }
+.vk-empty {
+  display: grid;
+  justify-items: center;
+  gap: 8px;
+  padding: 40px 16px;
+  text-align: center;
+  font-family: var(--vk-font);
+  color: var(--vk-text);
+}
+.vk-empty__icon {
+  font-size: 36px;
+  opacity: 0.7;
+}
+.vk-empty__title {
+  margin: 0;
+  font-size: 17px;
+}
+.vk-empty__description {
+  margin: 0;
+  max-width: 42ch;
+  color: var(--vk-muted);
+}
+.vk-empty__actions {
+  margin-top: 8px;
+  display: flex;
+  gap: 8px;
+}
 </style>

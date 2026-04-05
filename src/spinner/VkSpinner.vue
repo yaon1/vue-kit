@@ -15,6 +15,14 @@ withDefaults(defineProps<{ size?: number; label?: string }>(), { size: 16, label
   animation: vk-spin 0.7s linear infinite;
   vertical-align: middle;
 }
-@keyframes vk-spin { to { transform: rotate(360deg); } }
-@media (prefers-reduced-motion: reduce) { .vk-spinner { animation-duration: 2s; } }
+@keyframes vk-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vk-spinner {
+    animation-duration: 2s;
+  }
+}
 </style>

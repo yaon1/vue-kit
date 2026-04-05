@@ -16,15 +16,64 @@ const checked = defineModel<boolean>({ default: false })
 </template>
 
 <style>
-.vk-switch { display: inline-flex; align-items: flex-start; gap: 10px; font-family: var(--vk-font); color: var(--vk-text); cursor: pointer; }
-.vk-switch.is-disabled { opacity: 0.55; cursor: not-allowed; }
-.vk-switch__input { position: absolute; opacity: 0; width: 1px; height: 1px; }
-.vk-switch__track { flex: none; width: 36px; height: 20px; border-radius: 10px; background: var(--vk-border); position: relative; transition: background 0.15s; }
-.vk-switch__thumb { position: absolute; top: 2px; left: 2px; width: 16px; height: 16px; border-radius: 50%; background: #fff; transition: transform 0.15s; }
-.vk-switch__input:checked + .vk-switch__track { background: var(--vk-accent); }
-.vk-switch__input:checked + .vk-switch__track .vk-switch__thumb { transform: translateX(16px); }
-.vk-switch__input:focus-visible + .vk-switch__track { box-shadow: var(--vk-focus); }
-.vk-switch__text { display: grid; gap: 2px; }
-.vk-switch__description { font-size: 13px; color: var(--vk-muted); }
-@media (prefers-reduced-motion: reduce) { .vk-switch__track, .vk-switch__thumb { transition: none; } }
+.vk-switch {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 10px;
+  font-family: var(--vk-font);
+  color: var(--vk-text);
+  cursor: pointer;
+}
+.vk-switch.is-disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.vk-switch__input {
+  position: absolute;
+  opacity: 0;
+  width: 1px;
+  height: 1px;
+}
+.vk-switch__track {
+  flex: none;
+  width: 36px;
+  height: 20px;
+  border-radius: 10px;
+  background: var(--vk-border);
+  position: relative;
+  transition: background 0.15s;
+}
+.vk-switch__thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #fff;
+  transition: transform 0.15s;
+}
+.vk-switch__input:checked + .vk-switch__track {
+  background: var(--vk-accent);
+}
+.vk-switch__input:checked + .vk-switch__track .vk-switch__thumb {
+  transform: translateX(16px);
+}
+.vk-switch__input:focus-visible + .vk-switch__track {
+  box-shadow: var(--vk-focus);
+}
+.vk-switch__text {
+  display: grid;
+  gap: 2px;
+}
+.vk-switch__description {
+  font-size: 13px;
+  color: var(--vk-muted);
+}
+@media (prefers-reduced-motion: reduce) {
+  .vk-switch__track,
+  .vk-switch__thumb {
+    transition: none;
+  }
+}
 </style>

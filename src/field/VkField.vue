@@ -20,12 +20,30 @@ const describedby = computed(() => (props.error ? `${id}-error` : props.hint ? `
 </template>
 
 <style>
-.vk-field { display: grid; gap: 4px; font-family: var(--vk-font); color: var(--vk-text); }
-.vk-field__label { font-size: 14px; font-weight: 500; }
-.vk-field__required { color: var(--vk-danger); }
-.vk-field__hint, .vk-field__error { margin: 0; font-size: 12px; }
-.vk-field__hint { color: var(--vk-muted); }
-.vk-field__error { color: var(--vk-danger); }
+.vk-field {
+  display: grid;
+  gap: 4px;
+  font-family: var(--vk-font);
+  color: var(--vk-text);
+}
+.vk-field__label {
+  font-size: 14px;
+  font-weight: 500;
+}
+.vk-field__required {
+  color: var(--vk-danger);
+}
+.vk-field__hint,
+.vk-field__error {
+  margin: 0;
+  font-size: 12px;
+}
+.vk-field__hint {
+  color: var(--vk-muted);
+}
+.vk-field__error {
+  color: var(--vk-danger);
+}
 .vk-control {
   width: 100%;
   box-sizing: border-box;
@@ -36,6 +54,12 @@ const describedby = computed(() => (props.error ? `${id}-error` : props.hint ? `
   color: inherit;
   font: inherit;
 }
-.vk-control:focus { outline: none; border-color: var(--vk-accent); box-shadow: var(--vk-focus); }
-.vk-field.has-error .vk-control { border-color: var(--vk-danger); }
+.vk-control:focus {
+  outline: none;
+  border-color: var(--vk-accent);
+  box-shadow: var(--vk-focus);
+}
+.vk-field.has-error .vk-control {
+  border-color: var(--vk-danger);
+}
 </style>

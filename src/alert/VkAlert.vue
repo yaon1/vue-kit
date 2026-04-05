@@ -33,9 +33,26 @@ const role = props.tone === 'danger' ? 'alert' : 'status'
   color: var(--vk-text);
   font-family: var(--vk-font);
 }
-.vk-alert--success { --tone: var(--vk-success); }
-.vk-alert--warning { --tone: var(--vk-warning); }
-.vk-alert--danger { --tone: var(--vk-danger); }
-.vk-alert__content { flex: 1; display: grid; gap: 2px; }
-.vk-alert__close { border: 0; background: none; color: var(--vk-muted); font-size: 18px; cursor: pointer; align-self: flex-start; }
+.vk-alert--success {
+  --tone: var(--vk-success);
+}
+.vk-alert--warning {
+  --tone: var(--vk-warning);
+}
+.vk-alert--danger {
+  --tone: var(--vk-danger);
+}
+.vk-alert__content {
+  flex: 1;
+  display: grid;
+  gap: 2px;
+}
+.vk-alert__close {
+  border: 0;
+  background: none;
+  color: var(--vk-muted);
+  font-size: 18px;
+  cursor: pointer;
+  align-self: flex-start;
+}
 </style>

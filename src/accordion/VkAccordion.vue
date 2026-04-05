@@ -48,12 +48,44 @@ function toggle(key: string) {
 </template>
 
 <style>
-.vk-accordion { border: 1px solid var(--vk-border); border-radius: var(--vk-radius); font-family: var(--vk-font); color: var(--vk-text); }
-.vk-accordion__item + .vk-accordion__item { border-top: 1px solid var(--vk-border); }
-.vk-accordion__heading { margin: 0; font-size: inherit; }
-.vk-accordion__trigger { display: flex; width: 100%; justify-content: space-between; padding: 12px 14px; border: 0; background: none; color: inherit; font: inherit; font-weight: 600; text-align: left; cursor: pointer; }
-.vk-accordion__trigger:focus-visible { outline: none; box-shadow: inset var(--vk-focus); }
-.vk-accordion__icon { transition: transform 0.15s; }
-.vk-accordion__trigger[aria-expanded='true'] .vk-accordion__icon { transform: rotate(180deg); }
-.vk-accordion__panel { padding: 0 14px 14px; color: var(--vk-muted); }
+.vk-accordion {
+  border: 1px solid var(--vk-border);
+  border-radius: var(--vk-radius);
+  font-family: var(--vk-font);
+  color: var(--vk-text);
+}
+.vk-accordion__item + .vk-accordion__item {
+  border-top: 1px solid var(--vk-border);
+}
+.vk-accordion__heading {
+  margin: 0;
+  font-size: inherit;
+}
+.vk-accordion__trigger {
+  display: flex;
+  width: 100%;
+  justify-content: space-between;
+  padding: 12px 14px;
+  border: 0;
+  background: none;
+  color: inherit;
+  font: inherit;
+  font-weight: 600;
+  text-align: left;
+  cursor: pointer;
+}
+.vk-accordion__trigger:focus-visible {
+  outline: none;
+  box-shadow: inset var(--vk-focus);
+}
+.vk-accordion__icon {
+  transition: transform 0.15s;
+}
+.vk-accordion__trigger[aria-expanded='true'] .vk-accordion__icon {
+  transform: rotate(180deg);
+}
+.vk-accordion__panel {
+  padding: 0 14px 14px;
+  color: var(--vk-muted);
+}
 </style>

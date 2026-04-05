@@ -36,7 +36,10 @@ function resume(id: number): void {
   const entry = remaining.get(id)
   if (!entry || timers.has(id)) return
   entry.startedAt = Date.now()
-  timers.set(id, setTimeout(() => dismiss(id), Math.max(0, entry.left)))
+  timers.set(
+    id,
+    setTimeout(() => dismiss(id), Math.max(0, entry.left)),
+  )
 }
 
 function dismiss(id: number): void {
@@ -59,7 +62,10 @@ function show(message: string, options: ToastOptions = {}): number {
   while (toasts.length > MAX_VISIBLE) dismiss(toasts[0]!.id)
   if (toast.duration > 0) {
     remaining.set(toast.id, { left: toast.duration, startedAt: Date.now() })
-    timers.set(toast.id, setTimeout(() => dismiss(toast.id), toast.duration))
+    timers.set(
+      toast.id,
+      setTimeout(() => dismiss(toast.id), toast.duration),
+    )
   }
   return toast.id
 }
@@ -68,7 +74,10 @@ function show(message: string, options: ToastOptions = {}): number {
  * Shows a pending toast that turns into success or error when the promise settles.
  * Resolves/rejects with the original promise result.
  */
-async function promise<R>(task: Promise<R>, messages: { loading: string; success: string | ((r: R) => string); error: string | ((e: unknown) => string) }): Promise<R> {
+async function promise<R>(
+  task: Promise<R>,
+  messages: { loading: string; success: string | ((r: R) => string); error: string | ((e: unknown) => string) },
+): Promise<R> {
   const id = show(messages.loading, { duration: 0 })
   try {
     const result = await task

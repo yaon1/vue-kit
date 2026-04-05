@@ -36,7 +36,13 @@ function go(p: number) {
 </template>
 
 <style>
-.vk-pagination { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; font-family: var(--vk-font); }
+.vk-pagination {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  align-items: center;
+  font-family: var(--vk-font);
+}
 .vk-pagination__btn {
   min-width: 34px;
   height: 34px;
@@ -49,8 +55,21 @@ function go(p: number) {
   font-variant-numeric: tabular-nums;
   cursor: pointer;
 }
-.vk-pagination__btn.is-current { background: var(--vk-accent); border-color: var(--vk-accent); color: var(--vk-accent-text); }
-.vk-pagination__btn:disabled { opacity: 0.45; cursor: not-allowed; }
-.vk-pagination__btn:focus-visible { outline: none; box-shadow: var(--vk-focus); }
-.vk-pagination__gap { padding: 0 4px; color: var(--vk-muted); }
+.vk-pagination__btn.is-current {
+  background: var(--vk-accent);
+  border-color: var(--vk-accent);
+  color: var(--vk-accent-text);
+}
+.vk-pagination__btn:disabled {
+  opacity: 0.45;
+  cursor: not-allowed;
+}
+.vk-pagination__btn:focus-visible {
+  outline: none;
+  box-shadow: var(--vk-focus);
+}
+.vk-pagination__gap {
+  padding: 0 4px;
+  color: var(--vk-muted);
+}
 </style>

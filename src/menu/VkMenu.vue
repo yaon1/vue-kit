@@ -92,12 +92,53 @@ defineExpose({ show, close })
 </template>
 
 <style>
-.vk-menu { position: relative; display: inline-block; font-family: var(--vk-font); }
-.vk-menu__trigger { padding: 6px 10px; border: 1px solid var(--vk-border); border-radius: var(--vk-radius); background: var(--vk-bg); color: var(--vk-text); font: inherit; cursor: pointer; }
-.vk-menu__trigger:focus-visible { outline: none; box-shadow: var(--vk-focus); }
-.vk-menu__list { position: absolute; z-index: 30; right: 0; min-width: 180px; margin: 4px 0 0; padding: 4px; list-style: none; border: 1px solid var(--vk-border); border-radius: var(--vk-radius); background: var(--vk-bg); box-shadow: var(--vk-shadow); }
-.vk-menu__item { padding: 7px 10px; border-radius: 4px; color: var(--vk-text); cursor: pointer; }
-.vk-menu__item:focus, .vk-menu__item:hover { outline: none; background: var(--vk-surface); }
-.vk-menu__item.is-danger { color: var(--vk-danger); }
-.vk-menu__item[aria-disabled='true'] { opacity: 0.5; cursor: not-allowed; }
+.vk-menu {
+  position: relative;
+  display: inline-block;
+  font-family: var(--vk-font);
+}
+.vk-menu__trigger {
+  padding: 6px 10px;
+  border: 1px solid var(--vk-border);
+  border-radius: var(--vk-radius);
+  background: var(--vk-bg);
+  color: var(--vk-text);
+  font: inherit;
+  cursor: pointer;
+}
+.vk-menu__trigger:focus-visible {
+  outline: none;
+  box-shadow: var(--vk-focus);
+}
+.vk-menu__list {
+  position: absolute;
+  z-index: 30;
+  right: 0;
+  min-width: 180px;
+  margin: 4px 0 0;
+  padding: 4px;
+  list-style: none;
+  border: 1px solid var(--vk-border);
+  border-radius: var(--vk-radius);
+  background: var(--vk-bg);
+  box-shadow: var(--vk-shadow);
+}
+.vk-menu__item {
+  padding: 7px 10px;
+  border-radius: 4px;
+  color: var(--vk-text);
+  cursor: pointer;
+}
+.vk-menu__item:focus,
+.vk-menu__item:hover {
+  outline: none;
+  background: var(--vk-surface);
+}
+.vk-menu__item.is-danger {
+  color: var(--vk-danger);
+}
+.vk-menu__item[aria-disabled='true'] {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
 </style>

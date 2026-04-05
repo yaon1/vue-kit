@@ -2,11 +2,11 @@
 
 **Небольшие доступные компоненты для Vue 3, в которых сложные части уже сделаны правильно.** Combobox с полной клавиатурной навигацией по WAI-ARIA, таблица на 100 000+ строк без тормозов благодаря виртуализации, тосты, которые озвучивают скринридеры. **≈ 5,5 кБ gzip**, без зависимостей.
 
-| Компонент | Что умеет |
-|---|---|
-| `VkCombobox` | WAI-ARIA 1.2, generic `T`, свой фильтр, слот для опции, клавиатура (↑ ↓ Home End Enter Esc) |
-| `VkDataTable` | Виртуализация, стабильная «натуральная» сортировка, `aria-sort`/`aria-rowcount`, слоты ячеек, `v-model:sort` |
-| `VkToastHost` + `useToast()` | `role=status`/`alert`, кнопки действий, автоскрытие, учитывает `prefers-reduced-motion` |
+| Компонент                    | Что умеет                                                                                                    |
+| ---------------------------- | ------------------------------------------------------------------------------------------------------------ |
+| `VkCombobox`                 | WAI-ARIA 1.2, generic `T`, свой фильтр, слот для опции, клавиатура (↑ ↓ Home End Enter Esc)                  |
+| `VkDataTable`                | Виртуализация, стабильная «натуральная» сортировка, `aria-sort`/`aria-rowcount`, слоты ячеек, `v-model:sort` |
+| `VkToastHost` + `useToast()` | `role=status`/`alert`, кнопки действий, автоскрытие, учитывает `prefers-reduced-motion`                      |
 
 Светлая и тёмная темы на CSS-переменных.
 
@@ -29,7 +29,9 @@ const toast = useToast()
   <VkCombobox v-model="country" :options="countries" :get-label="(c) => c.name" label="Страна" />
 
   <VkDataTable v-model:sort="sort" :rows="orders" :columns="columns" row-key="id" caption="Заказы" :height="480">
-    <template #cell-customer="{ row }"><a :href="`/c/${row.customer.id}`">{{ row.customer.name }}</a></template>
+    <template #cell-customer="{ row }"
+      ><a :href="`/c/${row.customer.id}`">{{ row.customer.name }}</a></template
+    >
   </VkDataTable>
 
   <button @click="toast.error('Не удалось загрузить', { action: { label: 'Повторить', onClick: retry } })">…</button>

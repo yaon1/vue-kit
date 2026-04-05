@@ -43,7 +43,9 @@ describe('VkCombobox', () => {
   })
 
   it('clears the selection', async () => {
-    const w = mount(VkCombobox<string>, { props: { options: fruits, label: 'Fruit', clearable: true, modelValue: 'Apple', 'onUpdate:modelValue': () => {} } })
+    const w = mount(VkCombobox<string>, {
+      props: { options: fruits, label: 'Fruit', clearable: true, modelValue: 'Apple', 'onUpdate:modelValue': () => {} },
+    })
     await w.get('[aria-label="Clear selection"]').trigger('click')
     expect(w.emitted('update:modelValue')?.[0]).toEqual([null])
   })
@@ -70,7 +72,14 @@ describe('VkCombobox', () => {
 
   it('submits the selection through a hidden input', () => {
     const w = mount(VkCombobox<{ id: number; title: string }>, {
-      props: { options: [{ id: 7, title: 'Seven' }], label: 'N', name: 'number_id', modelValue: { id: 7, title: 'Seven' }, getLabel: (o: { title: string }) => o.title, getValue: (o: { id: number }) => String(o.id) },
+      props: {
+        options: [{ id: 7, title: 'Seven' }],
+        label: 'N',
+        name: 'number_id',
+        modelValue: { id: 7, title: 'Seven' },
+        getLabel: (o: { title: string }) => o.title,
+        getValue: (o: { id: number }) => String(o.id),
+      },
     })
     const hidden = w.get('input[type=hidden]')
     expect([hidden.attributes('name'), (hidden.element as HTMLInputElement).value]).toEqual(['number_id', '7'])

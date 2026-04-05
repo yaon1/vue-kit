@@ -2,7 +2,19 @@ import { mount } from '@vue/test-utils'
 import axe from 'axe-core'
 import { describe, expect, it } from 'vitest'
 import { h, type Component } from 'vue'
-import { VkAccordion, VkAlert, VkButton, VkCombobox, VkDataTable, VkInput, VkMenu, VkPagination, VkProgress, VkSwitch, VkTabs } from './index'
+import {
+  VkAccordion,
+  VkAlert,
+  VkButton,
+  VkCombobox,
+  VkDataTable,
+  VkInput,
+  VkMenu,
+  VkPagination,
+  VkProgress,
+  VkSwitch,
+  VkTabs,
+} from './index'
 
 // Runs axe-core against rendered components; color-contrast needs real layout, so it's skipped in jsdom.
 async function violations(component: Component, props: Record<string, unknown> = {}, slots: Record<string, () => unknown> = {}) {
@@ -26,7 +38,10 @@ describe('accessibility', () => {
   })
 
   it('tabs', async () => {
-    const tabs = [{ key: 'a', label: 'A' }, { key: 'b', label: 'B' }]
+    const tabs = [
+      { key: 'a', label: 'A' },
+      { key: 'b', label: 'B' },
+    ]
     expect(await violations(VkTabs, { tabs, label: 'Sections', modelValue: 'a' }, { a: () => h('p', 'Panel A') })).toEqual([])
   })
 
@@ -36,7 +51,14 @@ describe('accessibility', () => {
 
   it('data table', async () => {
     const rows = [{ id: 1, name: 'Ada' }]
-    expect(await violations(VkDataTable as unknown as Component, { rows, rowKey: 'id', caption: 'People', columns: [{ key: 'name', label: 'Name', sortable: true }] })).toEqual([])
+    expect(
+      await violations(VkDataTable as unknown as Component, {
+        rows,
+        rowKey: 'id',
+        caption: 'People',
+        columns: [{ key: 'name', label: 'Name', sortable: true }],
+      }),
+    ).toEqual([])
   })
 
   it('switch', async () => {
@@ -44,7 +66,9 @@ describe('accessibility', () => {
   })
 
   it('accordion', async () => {
-    expect(await violations(VkAccordion, { items: [{ key: 'q', title: 'Question' }], modelValue: ['q'] }, { q: () => 'Answer' })).toEqual([])
+    expect(await violations(VkAccordion, { items: [{ key: 'q', title: 'Question' }], modelValue: ['q'] }, { q: () => 'Answer' })).toEqual(
+      [],
+    )
   })
 
   it('menu', async () => {

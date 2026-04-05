@@ -3,7 +3,10 @@ import { expect, it } from 'vitest'
 import VkInput from './VkInput.vue'
 
 it('links label, hint and error to the input', async () => {
-  const w = mount(VkInput, { props: { label: 'Email', hint: 'Мы не рассылаем спам', type: 'email', required: true }, attrs: { autocomplete: 'email' } })
+  const w = mount(VkInput, {
+    props: { label: 'Email', hint: 'Мы не рассылаем спам', type: 'email', required: true },
+    attrs: { autocomplete: 'email' },
+  })
   const input = w.get('input')
   expect(w.get('label').attributes('for')).toBe(input.attributes('id'))
   expect(w.get(`[id="${input.attributes('aria-describedby')}"]`).text()).toBe('Мы не рассылаем спам')

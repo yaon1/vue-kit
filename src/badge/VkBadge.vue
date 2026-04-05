@@ -1,12 +1,15 @@
 <script setup lang="ts">
 import { computed } from 'vue'
 
-const props = withDefaults(defineProps<{ tone?: 'neutral' | 'accent' | 'success' | 'warning' | 'danger'; dot?: boolean; count?: number; max?: number }>(), {
-  tone: 'neutral',
-  dot: false,
-  count: undefined,
-  max: 99,
-})
+const props = withDefaults(
+  defineProps<{ tone?: 'neutral' | 'accent' | 'success' | 'warning' | 'danger'; dot?: boolean; count?: number; max?: number }>(),
+  {
+    tone: 'neutral',
+    dot: false,
+    count: undefined,
+    max: 99,
+  },
+)
 const countText = computed(() => (props.count === undefined ? null : props.count > props.max ? `${props.max}+` : String(props.count)))
 </script>
 
@@ -29,9 +32,22 @@ const countText = computed(() => (props.count === undefined ? null : props.count
   color: var(--tone);
   background: color-mix(in srgb, var(--tone) 14%, transparent);
 }
-.vk-badge--accent { --tone: var(--vk-accent); }
-.vk-badge--success { --tone: var(--vk-success); }
-.vk-badge--warning { --tone: var(--vk-warning); }
-.vk-badge--danger { --tone: var(--vk-danger); }
-.vk-badge__dot { width: 6px; height: 6px; border-radius: 50%; background: currentColor; }
+.vk-badge--accent {
+  --tone: var(--vk-accent);
+}
+.vk-badge--success {
+  --tone: var(--vk-success);
+}
+.vk-badge--warning {
+  --tone: var(--vk-warning);
+}
+.vk-badge--danger {
+  --tone: var(--vk-danger);
+}
+.vk-badge__dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
 </style>

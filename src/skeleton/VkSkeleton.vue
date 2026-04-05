@@ -20,7 +20,10 @@ withDefaults(defineProps<{ lines?: number; width?: string; height?: string; circ
 </template>
 
 <style>
-.vk-skeleton { display: grid; gap: 8px; }
+.vk-skeleton {
+  display: grid;
+  gap: 8px;
+}
 .vk-skeleton__line {
   display: block;
   border-radius: 4px;
@@ -28,7 +31,20 @@ withDefaults(defineProps<{ lines?: number; width?: string; height?: string; circ
   background-size: 400% 100%;
   animation: vk-shimmer 1.4s ease infinite;
 }
-.vk-skeleton__line.is-circle { border-radius: 50%; }
-@keyframes vk-shimmer { from { background-position: 100% 50%; } to { background-position: 0 50%; } }
-@media (prefers-reduced-motion: reduce) { .vk-skeleton__line { animation: none; } }
+.vk-skeleton__line.is-circle {
+  border-radius: 50%;
+}
+@keyframes vk-shimmer {
+  from {
+    background-position: 100% 50%;
+  }
+  to {
+    background-position: 0 50%;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .vk-skeleton__line {
+    animation: none;
+  }
+}
 </style>

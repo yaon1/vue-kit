@@ -11,7 +11,11 @@ describe('sortRows', () => {
   })
 
   it('is stable', () => {
-    const rows = [{ g: 1, id: 'a' }, { g: 0, id: 'b' }, { g: 1, id: 'c' }]
+    const rows = [
+      { g: 1, id: 'a' },
+      { g: 0, id: 'b' },
+      { g: 1, id: 'c' },
+    ]
     expect(sortRows(rows, { key: 'g', direction: 'asc' }, get).map((r) => r.id)).toEqual(['b', 'a', 'c'])
   })
 })

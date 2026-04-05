@@ -62,7 +62,9 @@ it('selects rows and toggles all with an indeterminate header', async () => {
 })
 
 it('shows skeleton rows while loading', () => {
-  const w = mount(VkDataTable<Row>, { props: { rows: [], columns, rowKey: 'id', caption: 'Users', loading: true, height: 120, rowHeight: 40 } })
+  const w = mount(VkDataTable<Row>, {
+    props: { rows: [], columns, rowKey: 'id', caption: 'Users', loading: true, height: 120, rowHeight: 40 },
+  })
   expect(w.get('[role=table]').attributes('aria-busy')).toBe('true')
   expect(w.findAll('.vk-table__loading .vk-table__row')).toHaveLength(3)
   expect(w.find('.vk-table__empty').exists()).toBe(false)
@@ -79,9 +81,19 @@ it('renders a footer slot with the sorted rows', () => {
 it('uses a column comparator when given', async () => {
   const priority = { low: 0, high: 2, medium: 1 } as const
   type Task = { id: number; level: keyof typeof priority }
-  const tasks: Task[] = [{ id: 1, level: 'medium' }, { id: 2, level: 'high' }, { id: 3, level: 'low' }]
+  const tasks: Task[] = [
+    { id: 1, level: 'medium' },
+    { id: 2, level: 'high' },
+    { id: 3, level: 'low' },
+  ]
   const w = mount(VkDataTable<Task>, {
-    props: { rows: tasks, rowKey: 'id', caption: 'Tasks', sort: { key: 'level', direction: 'asc' }, columns: [{ key: 'level', label: 'Level', sortable: true, compare: (a: Task, b: Task) => priority[a.level] - priority[b.level] }] },
+    props: {
+      rows: tasks,
+      rowKey: 'id',
+      caption: 'Tasks',
+      sort: { key: 'level', direction: 'asc' },
+      columns: [{ key: 'level', label: 'Level', sortable: true, compare: (a: Task, b: Task) => priority[a.level] - priority[b.level] }],
+    },
   })
   expect(w.findAll('.vk-table__body [role=cell]').map((c) => c.text())).toEqual(['low', 'medium', 'high'])
 })

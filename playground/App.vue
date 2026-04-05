@@ -22,8 +22,9 @@ import { VkTextarea } from '../src'
 // extra-imports
 
 type Country = { code: string; name: string }
-const countries: Country[] = ['DE Germany', 'FR France', 'GE Georgia', 'JP Japan', 'KZ Kazakhstan', 'TH Thailand', 'US United States']
-  .map((s) => ({ code: s.slice(0, 2), name: s.slice(3) }))
+const countries: Country[] = ['DE Germany', 'FR France', 'GE Georgia', 'JP Japan', 'KZ Kazakhstan', 'TH Thailand', 'US United States'].map(
+  (s) => ({ code: s.slice(0, 2), name: s.slice(3) }),
+)
 const country = ref<Country | null>(null)
 
 // Simulated server search with latency.
@@ -60,6 +61,10 @@ const selected = ref<unknown[]>([])
 const tableLoading = ref(false)
 
 const dialogOpen = ref(false)
+function confirmDelete(close: () => void) {
+  close()
+  toast.error('Удалено')
+}
 const tab = ref('general')
 const page = ref(1)
 const notify = ref(true)
@@ -75,16 +80,34 @@ const toast = useToast()
   <main>
     <header class="pg-header">
       <h1>vue-kit</h1>
-      <VkSelect v-model="theme.preference.value" label="Тема" :options="[{ value: 'system', label: 'Системная' }, { value: 'light', label: 'Светлая' }, { value: 'dark', label: 'Тёмная' }]" />
+      <VkSelect
+        v-model="theme.preference.value"
+        label="Тема"
+        :options="[
+          { value: 'system', label: 'Системная' },
+          { value: 'light', label: 'Светлая' },
+          { value: 'dark', label: 'Тёмная' },
+        ]"
+      />
     </header>
 
     <section>
       <h2>Combobox</h2>
       <VkCombobox v-model="country" :options="countries" :get-label="(c) => c.name" label="Country" placeholder="Start typing…">
-        <template #option="{ option }"><b>{{ option.code }}</b> {{ option.name }}</template>
+        <template #option="{ option }"
+          ><b>{{ option.code }}</b> {{ option.name }}</template
+        >
       </VkCombobox>
       <p>Selected: {{ country?.name ?? 'none' }}</p>
-      <VkCombobox v-model="city" :options="cities" :loading="citiesLoading" remote clearable label="Город (поиск на сервере)" @search="searchCities" />
+      <VkCombobox
+        v-model="city"
+        :options="cities"
+        :loading="citiesLoading"
+        remote
+        clearable
+        label="Город (поиск на сервере)"
+        @search="searchCities"
+      />
     </section>
 
     <section>
@@ -93,9 +116,21 @@ const toast = useToast()
         <VkSwitch v-model="tableLoading" label="Загрузка" />
         Выбрано: {{ selected.length }}
       </p>
-      <VkDataTable v-model:sort="sort" v-model:selected="selected" selectable :loading="tableLoading" :rows="orders" :columns="columns" row-key="id" caption="Orders" :height="360">
+      <VkDataTable
+        v-model:sort="sort"
+        v-model:selected="selected"
+        selectable
+        :loading="tableLoading"
+        :rows="orders"
+        :columns="columns"
+        row-key="id"
+        caption="Orders"
+        :height="360"
+      >
         <template #footer="{ rows }">Всего строк: {{ rows.length.toLocaleString() }}</template>
-        <template #cell-customer="{ row }"><a href="#" @click.prevent="toast.show(`Open ${row.customer}`)">{{ row.customer }}</a></template>
+        <template #cell-customer="{ row }"
+          ><a href="#" @click.prevent="toast.show(`Open ${row.customer}`)">{{ row.customer }}</a></template
+        >
       </VkDataTable>
     </section>
 
@@ -122,14 +157,22 @@ const toast = useToast()
         <p>Проект и все его данные будут удалены без возможности восстановления.</p>
         <template #footer="{ close }">
           <VkButton @click="close">Отмена</VkButton>
-          <VkButton variant="danger" @click="close(); toast.error('Удалено')">Удалить</VkButton>
+          <VkButton variant="danger" @click="confirmDelete(close)">Удалить</VkButton>
         </template>
       </VkDialog>
     </section>
 
     <section>
       <h2>Tabs</h2>
-      <VkTabs v-model="tab" label="Настройки" :tabs="[{ key: 'general', label: 'Общие' }, { key: 'billing', label: 'Оплата', disabled: true }, { key: 'security', label: 'Безопасность' }]">
+      <VkTabs
+        v-model="tab"
+        label="Настройки"
+        :tabs="[
+          { key: 'general', label: 'Общие' },
+          { key: 'billing', label: 'Оплата', disabled: true },
+          { key: 'security', label: 'Безопасность' },
+        ]"
+      >
         <template #general>Имя, язык, часовой пояс.</template>
         <template #security>Пароль и двухфакторная аутентификация.</template>
       </VkTabs>
@@ -158,7 +201,9 @@ const toast = useToast()
     <section>
       <h2>Badge &amp; Alert</h2>
       <p><VkBadge>Черновик</VkBadge> <VkBadge tone="success" dot>Активен</VkBadge> <VkBadge tone="danger">Просрочен</VkBadge></p>
-      <VkAlert v-if="showAlert" tone="warning" title="Подписка заканчивается" dismissible @dismiss="showAlert = false">Продлите до 1 ноября, чтобы не потерять данные.</VkAlert>
+      <VkAlert v-if="showAlert" tone="warning" title="Подписка заканчивается" dismissible @dismiss="showAlert = false"
+        >Продлите до 1 ноября, чтобы не потерять данные.</VkAlert
+      >
     </section>
 
     <section>
@@ -170,19 +215,39 @@ const toast = useToast()
 
     <section>
       <h2>Accordion &amp; Menu</h2>
-      <VkAccordion :items="[{ key: 'pay', title: 'Как оплатить?' }, { key: 'refund', title: 'Как вернуть деньги?' }]">
+      <VkAccordion
+        :items="[
+          { key: 'pay', title: 'Как оплатить?' },
+          { key: 'refund', title: 'Как вернуть деньги?' },
+        ]"
+      >
         <template #pay>Картой или по счёту для юрлиц.</template>
         <template #refund>В течение 14 дней через поддержку.</template>
       </VkAccordion>
       <p>
-        <VkMenu label="Действия" :items="[{ key: 'edit', label: 'Редактировать' }, { key: 'archive', label: 'Архивировать', disabled: true }, { key: 'delete', label: 'Удалить', danger: true }]" @select="(k) => toast.show(k)" />
+        <VkMenu
+          label="Действия"
+          :items="[
+            { key: 'edit', label: 'Редактировать' },
+            { key: 'archive', label: 'Архивировать', disabled: true },
+            { key: 'delete', label: 'Удалить', danger: true },
+          ]"
+          @select="(k) => toast.show(k)"
+        />
       </p>
     </section>
 
     <section>
       <h2>Form fields</h2>
       <form class="pg-form" @submit.prevent="toast.success('Отправлено')">
-        <VkInput v-model="email" label="Email" type="email" required hint="Пришлём ссылку для входа" :error="email && !email.includes('@') ? 'Нужен адрес с @' : undefined" />
+        <VkInput
+          v-model="email"
+          label="Email"
+          type="email"
+          required
+          hint="Пришлём ссылку для входа"
+          :error="email && !email.includes('@') ? 'Нужен адрес с @' : undefined"
+        />
         <VkTextarea v-model="comment" label="Комментарий" />
         <VkButton type="submit" variant="primary">Отправить</VkButton>
       </form>
@@ -193,10 +258,32 @@ const toast = useToast()
 </template>
 
 <style>
-body { margin: 0; background: var(--vk-bg); color: var(--vk-text); font-family: var(--vk-font); }
-main { max-width: 880px; margin: 0 auto; padding: 24px 16px; }
-section { margin-block: 32px; }
-.pg-form { display: grid; gap: 12px; max-width: 420px; }
-.pg-header { display: flex; justify-content: space-between; align-items: end; gap: 16px; }
-button { margin-right: 8px; }
+body {
+  margin: 0;
+  background: var(--vk-bg);
+  color: var(--vk-text);
+  font-family: var(--vk-font);
+}
+main {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 24px 16px;
+}
+section {
+  margin-block: 32px;
+}
+.pg-form {
+  display: grid;
+  gap: 12px;
+  max-width: 420px;
+}
+.pg-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  gap: 16px;
+}
+button {
+  margin-right: 8px;
+}
 </style>

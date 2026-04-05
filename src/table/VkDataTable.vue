@@ -105,13 +105,7 @@ defineExpose({ scrollToIndex: (i: number) => viewport.value?.scrollTo({ top: i *
     <div class="vk-table__head" role="rowgroup">
       <div class="vk-table__row" role="row" aria-rowindex="1" :style="{ gridTemplateColumns: template }">
         <div v-if="selectable" role="columnheader" class="vk-table__th vk-table__select">
-          <input
-            type="checkbox"
-            aria-label="Select all rows"
-            :checked="allSelected"
-            :indeterminate="someSelected"
-            @change="toggleAll"
-          />
+          <input type="checkbox" aria-label="Select all rows" :checked="allSelected" :indeterminate="someSelected" @change="toggleAll" />
         </div>
         <div
           v-for="column in columns"
@@ -140,7 +134,12 @@ defineExpose({ scrollToIndex: (i: number) => viewport.value?.scrollTo({ top: i *
       @scroll.passive="scrollTop = ($event.target as HTMLElement).scrollTop"
     >
       <div v-if="loading" class="vk-table__loading">
-        <div v-for="i in Math.min(8, Math.ceil(height / rowHeight))" :key="i" class="vk-table__row" :style="{ gridTemplateColumns: template, height: `${rowHeight}px` }">
+        <div
+          v-for="i in Math.min(8, Math.ceil(height / rowHeight))"
+          :key="i"
+          class="vk-table__row"
+          :style="{ gridTemplateColumns: template, height: `${rowHeight}px` }"
+        >
           <div v-for="c in columns.length + (selectable ? 1 : 0)" :key="c" class="vk-table__td"><span class="vk-table__shimmer" /></div>
         </div>
       </div>
@@ -158,15 +157,14 @@ defineExpose({ scrollToIndex: (i: number) => viewport.value?.scrollTo({ top: i *
             @click="emit('rowClick', row, $event)"
           >
             <div v-if="selectable" role="cell" class="vk-table__td vk-table__select" @click.stop>
-              <input type="checkbox" :aria-label="`Select row ${index + 1}`" :checked="selectedSet.has(row[rowKey])" @change="toggleRow(row)" />
+              <input
+                type="checkbox"
+                :aria-label="`Select row ${index + 1}`"
+                :checked="selectedSet.has(row[rowKey])"
+                @change="toggleRow(row)"
+              />
             </div>
-            <div
-              v-for="column in columns"
-              :key="column.key"
-              role="cell"
-              class="vk-table__td"
-              :class="`is-${column.align ?? 'start'}`"
-            >
+            <div v-for="column in columns" :key="column.key" role="cell" class="vk-table__td" :class="`is-${column.align ?? 'start'}`">
               <slot :name="`cell-${column.key}`" :row="row" :value="valueOf(row, column.key)">{{ display(column, row) }}</slot>
             </div>
           </div>
@@ -187,16 +185,44 @@ defineExpose({ scrollToIndex: (i: number) => viewport.value?.scrollTo({ top: i *
   background: var(--vk-bg);
   font-variant-numeric: tabular-nums;
 }
-.vk-table__head { background: var(--vk-surface); border-bottom: 1px solid var(--vk-border); }
-.vk-table__body { overflow-y: auto; overscroll-behavior: contain; }
-.vk-table__row { display: grid; align-items: center; }
-.vk-table__body .vk-table__row { border-bottom: 1px solid var(--vk-border); box-sizing: border-box; }
-.vk-table__body .vk-table__row:hover { background: var(--vk-surface); }
+.vk-table__head {
+  background: var(--vk-surface);
+  border-bottom: 1px solid var(--vk-border);
+}
+.vk-table__body {
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+.vk-table__row {
+  display: grid;
+  align-items: center;
+}
+.vk-table__body .vk-table__row {
+  border-bottom: 1px solid var(--vk-border);
+  box-sizing: border-box;
+}
+.vk-table__body .vk-table__row:hover {
+  background: var(--vk-surface);
+}
 .vk-table__th,
-.vk-table__td { padding: 0 12px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.vk-table__th { padding-block: 10px; font-size: 13px; font-weight: 600; color: var(--vk-muted); }
-.is-end { text-align: end; }
-.is-center { text-align: center; }
+.vk-table__td {
+  padding: 0 12px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.vk-table__th {
+  padding-block: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--vk-muted);
+}
+.is-end {
+  text-align: end;
+}
+.is-center {
+  text-align: center;
+}
 .vk-table__sort {
   all: unset;
   cursor: pointer;
@@ -205,13 +231,46 @@ defineExpose({ scrollToIndex: (i: number) => viewport.value?.scrollTo({ top: i *
   align-items: center;
   border-radius: 4px;
 }
-.vk-table__sort:focus-visible { box-shadow: var(--vk-focus); }
-.vk-table__arrow { font-size: 10px; opacity: 0.7; }
-.vk-table__select { display: flex; align-items: center; justify-content: center; padding: 0; }
-.vk-table__select input { accent-color: var(--vk-accent); }
-.vk-table__row[aria-selected='true'] { background: color-mix(in srgb, var(--vk-accent) 8%, transparent); }
-.vk-table__shimmer { display: block; height: 10px; border-radius: 4px; background: var(--vk-surface); animation: vk-table-pulse 1.2s ease-in-out infinite; }
-@keyframes vk-table-pulse { 50% { opacity: 0.5; } }
-.vk-table__footer { padding: 10px 12px; border-top: 1px solid var(--vk-border); background: var(--vk-surface); font-size: 13px; }
-.vk-table__empty { padding: 32px; text-align: center; color: var(--vk-muted); }
+.vk-table__sort:focus-visible {
+  box-shadow: var(--vk-focus);
+}
+.vk-table__arrow {
+  font-size: 10px;
+  opacity: 0.7;
+}
+.vk-table__select {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+.vk-table__select input {
+  accent-color: var(--vk-accent);
+}
+.vk-table__row[aria-selected='true'] {
+  background: color-mix(in srgb, var(--vk-accent) 8%, transparent);
+}
+.vk-table__shimmer {
+  display: block;
+  height: 10px;
+  border-radius: 4px;
+  background: var(--vk-surface);
+  animation: vk-table-pulse 1.2s ease-in-out infinite;
+}
+@keyframes vk-table-pulse {
+  50% {
+    opacity: 0.5;
+  }
+}
+.vk-table__footer {
+  padding: 10px 12px;
+  border-top: 1px solid var(--vk-border);
+  background: var(--vk-surface);
+  font-size: 13px;
+}
+.vk-table__empty {
+  padding: 32px;
+  text-align: center;
+  color: var(--vk-muted);
+}
 </style>

@@ -6,6 +6,11 @@ withDefaults(defineProps<{ position?: 'top-right' | 'bottom-right' | 'bottom-cen
 })
 
 const { toasts, dismiss, pause, resume } = useToast()
+
+function runAction(id: number, action: () => void) {
+  action()
+  dismiss(id)
+}
 </script>
 
 <template>
@@ -24,12 +29,7 @@ const { toasts, dismiss, pause, resume } = useToast()
         @focusout="resume(toast.id)"
       >
         <span class="vk-toast__message">{{ toast.message }}</span>
-        <button
-          v-if="toast.action"
-          type="button"
-          class="vk-toast__action"
-          @click="toast.action.onClick(); dismiss(toast.id)"
-        >
+        <button v-if="toast.action" type="button" class="vk-toast__action" @click="runAction(toast.id, toast.action.onClick)">
           {{ toast.action.label }}
         </button>
         <button type="button" class="vk-toast__close" aria-label="Dismiss" @click="dismiss(toast.id)">×</button>
@@ -50,9 +50,21 @@ const { toasts, dismiss, pause, resume } = useToast()
   font-family: var(--vk-font);
   pointer-events: none;
 }
-.vk-toasts--top-right { top: 0; right: 0; }
-.vk-toasts--bottom-right { bottom: 0; right: 0; flex-direction: column-reverse; }
-.vk-toasts--bottom-center { bottom: 0; left: 50%; transform: translateX(-50%); flex-direction: column-reverse; }
+.vk-toasts--top-right {
+  top: 0;
+  right: 0;
+}
+.vk-toasts--bottom-right {
+  bottom: 0;
+  right: 0;
+  flex-direction: column-reverse;
+}
+.vk-toasts--bottom-center {
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  flex-direction: column-reverse;
+}
 
 .vk-toast {
   display: flex;
@@ -66,10 +78,18 @@ const { toasts, dismiss, pause, resume } = useToast()
   box-shadow: var(--vk-shadow);
   pointer-events: auto;
 }
-.vk-toast--success { border-left-color: var(--vk-success); }
-.vk-toast--warning { border-left-color: var(--vk-warning); }
-.vk-toast--error { border-left-color: var(--vk-danger); }
-.vk-toast__message { flex: 1; }
+.vk-toast--success {
+  border-left-color: var(--vk-success);
+}
+.vk-toast--warning {
+  border-left-color: var(--vk-warning);
+}
+.vk-toast--error {
+  border-left-color: var(--vk-danger);
+}
+.vk-toast__message {
+  flex: 1;
+}
 .vk-toast__action,
 .vk-toast__close {
   border: 0;
@@ -80,17 +100,33 @@ const { toasts, dismiss, pause, resume } = useToast()
   cursor: pointer;
   border-radius: 4px;
 }
-.vk-toast__close { color: var(--vk-muted); font-size: 18px; line-height: 1; }
+.vk-toast__close {
+  color: var(--vk-muted);
+  font-size: 18px;
+  line-height: 1;
+}
 .vk-toast__action:focus-visible,
-.vk-toast__close:focus-visible { outline: none; box-shadow: var(--vk-focus); }
+.vk-toast__close:focus-visible {
+  outline: none;
+  box-shadow: var(--vk-focus);
+}
 
 .vk-toast-enter-active,
-.vk-toast-leave-active { transition: opacity 0.2s, transform 0.2s; }
+.vk-toast-leave-active {
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+}
 .vk-toast-enter-from,
-.vk-toast-leave-to { opacity: 0; transform: translateY(8px); }
+.vk-toast-leave-to {
+  opacity: 0;
+  transform: translateY(8px);
+}
 
 @media (prefers-reduced-motion: reduce) {
   .vk-toast-enter-active,
-  .vk-toast-leave-active { transition: none; }
+  .vk-toast-leave-active {
+    transition: none;
+  }
 }
 </style>

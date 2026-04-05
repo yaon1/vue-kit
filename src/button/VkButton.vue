@@ -44,17 +44,52 @@ defineEmits<{ click: [event: MouseEvent] }>()
   font-family: var(--vk-font);
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.15s, border-color 0.15s;
+  transition:
+    background 0.15s,
+    border-color 0.15s;
 }
-.vk-button:hover:not(:disabled) { background: var(--vk-surface); }
-.vk-button:focus-visible { outline: none; box-shadow: var(--vk-focus); }
-.vk-button:disabled { opacity: 0.55; cursor: not-allowed; }
-.vk-button--sm { padding: 4px 10px; font-size: 13px; }
-.vk-button--md { padding: 8px 14px; font-size: 14px; }
-.vk-button--lg { padding: 11px 18px; font-size: 16px; }
-.vk-button--block { display: flex; width: 100%; }
-.vk-button--primary { background: var(--vk-accent); border-color: var(--vk-accent); color: var(--vk-accent-text); }
-.vk-button--primary:hover:not(:disabled) { background: var(--vk-accent); filter: brightness(1.08); }
-.vk-button--ghost { border-color: transparent; background: transparent; }
-.vk-button--danger { color: var(--vk-danger); border-color: currentColor; }
+.vk-button:hover:not(:disabled) {
+  background: var(--vk-surface);
+}
+.vk-button:focus-visible {
+  outline: none;
+  box-shadow: var(--vk-focus);
+}
+.vk-button:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+.vk-button--sm {
+  padding: 4px 10px;
+  font-size: 13px;
+}
+.vk-button--md {
+  padding: 8px 14px;
+  font-size: 14px;
+}
+.vk-button--lg {
+  padding: 11px 18px;
+  font-size: 16px;
+}
+.vk-button--block {
+  display: flex;
+  width: 100%;
+}
+.vk-button--primary {
+  background: var(--vk-accent);
+  border-color: var(--vk-accent);
+  color: var(--vk-accent-text);
+}
+.vk-button--primary:hover:not(:disabled) {
+  background: var(--vk-accent);
+  filter: brightness(1.08);
+}
+.vk-button--ghost {
+  border-color: transparent;
+  background: transparent;
+}
+.vk-button--danger {
+  color: var(--vk-danger);
+  border-color: currentColor;
+}
 </style>

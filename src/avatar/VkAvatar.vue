@@ -3,7 +3,10 @@ import { computed, ref, watch } from 'vue'
 
 const props = withDefaults(defineProps<{ name: string; src?: string; size?: number }>(), { src: undefined, size: 36 })
 const failed = ref(false)
-watch(() => props.src, () => (failed.value = false))
+watch(
+  () => props.src,
+  () => (failed.value = false),
+)
 
 const initials = computed(() =>
   props.name
@@ -38,5 +41,9 @@ const hue = computed(() => [...props.name].reduce((h, ch) => (h * 31 + ch.charCo
   font-family: var(--vk-font);
   font-weight: 600;
 }
-.vk-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.vk-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
 </style>

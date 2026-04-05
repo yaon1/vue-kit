@@ -44,6 +44,9 @@ it('closes on Escape and returns focus', async () => {
 })
 
 it('renders custom item content through a slot', () => {
-  const w = mount(VkMenu, { props: { items, label: 'Действия' }, slots: { item: '<template #item="{ item }">★ {{ item.label }}</template>' } })
+  const w = mount(VkMenu, {
+    props: { items, label: 'Действия' },
+    slots: { item: '<template #item="{ item }">★ {{ item.label }}</template>' },
+  })
   expect(w.findAll('[role=menuitem]')[0]!.text()).toBe('★ Редактировать')
 })
