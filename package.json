@@ -27,7 +27,8 @@
     "lint": "eslint .",
     "format": "prettier --write .",
     "format:check": "prettier --check .",
-    "coverage": "vitest run --coverage"
+    "coverage": "vitest run --coverage",
+    "size": "node -e \"const z=require('zlib'),f=require('fs');for(const p of ['dist/vue-kit.js','dist/vue-kit.css']){const b=f.readFileSync(p);console.log(p,(z.gzipSync(b).length/1024).toFixed(2)+' kB gzip')}\""
   },
   "peerDependencies": {
     "vue": "^3.4.0"
@@ -50,5 +51,25 @@
     "vitest": "^3.2.7",
     "vue": "^3.5.44",
     "vue-tsc": "^3.3.13"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yaon1/vue-kit.git"
+  },
+  "homepage": "https://yaon1.github.io/vue-kit/",
+  "bugs": {
+    "url": "https://github.com/yaon1/vue-kit/issues"
+  },
+  "keywords": [
+    "vue",
+    "vue3",
+    "components",
+    "ui",
+    "accessibility",
+    "a11y",
+    "combobox",
+    "datatable",
+    "virtual-scroll",
+    "toast"
+  ]
 }
