@@ -19,6 +19,7 @@ import { VkSelect } from '../src'
 import { useTheme } from '../src'
 import { VkInput } from '../src'
 import { VkTextarea } from '../src'
+import { useDebounced } from '../src'
 // extra-imports
 
 type Country = { code: string; name: string }
@@ -32,14 +33,13 @@ const allCities = ['Москва', 'Санкт-Петербург', 'Казан�
 const city = ref<string | null>(null)
 const cities = ref<string[]>([])
 const citiesLoading = ref(false)
-let searchTimer: ReturnType<typeof setTimeout> | undefined
+const fetchCities = useDebounced((q: string) => {
+  cities.value = allCities.filter((c) => c.toLowerCase().includes(q.toLowerCase()))
+  citiesLoading.value = false
+}, 400)
 function searchCities(q: string) {
   citiesLoading.value = true
-  clearTimeout(searchTimer)
-  searchTimer = setTimeout(() => {
-    cities.value = allCities.filter((c) => c.toLowerCase().includes(q.toLowerCase()))
-    citiesLoading.value = false
-  }, 400)
+  fetchCities(q)
 }
 
 type Order = { id: number; customer: string; total: number; createdAt: Date }
