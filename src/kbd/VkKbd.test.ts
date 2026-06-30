@@ -8,6 +8,8 @@ it('splits a shortcut into keys', () => {
 })
 
 it('maps mod to the platform modifier', () => {
-  const key = mount(VkKbd, { props: { keys: 'mod+S' } }).findAll('kbd')[0]!.text()
+  const key = mount(VkKbd, { props: { keys: 'mod+S' } })
+    .findAll('kbd')[0]!
+    .text()
   expect(['⌘', 'Ctrl']).toContain(key)
 })
