@@ -52,6 +52,20 @@ const toast = useToast()
 
 Ошибки в тостах не скрываются сами, пока пользователь их не закроет.
 
+## Формы
+
+```vue
+<form @submit.prevent="save">
+  <VkInput v-model="email" label="Email" type="email" required hint="Пришлём ссылку для входа" :error="errors.email" />
+  <VkSelect v-model="plan" label="Тариф" placeholder="Выберите" :options="[{ value: 'pro', label: 'Pro' }]" />
+  <VkCombobox v-model="city" name="city_id" :get-value="(c) => c.id" :options="cities" label="Город" />
+  <VkTextarea v-model="comment" label="Комментарий" />
+  <VkButton type="submit" variant="primary" :loading="saving">Сохранить</VkButton>
+</form>
+```
+
+Подсказка и ошибка озвучиваются скринридером вместе с полем. При ошибке поле получает `aria-invalid`.
+
 ## Установка
 
 ```bash
