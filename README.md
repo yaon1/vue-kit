@@ -2,11 +2,22 @@
 
 **Небольшие доступные компоненты для Vue 3, в которых сложные части уже сделаны правильно.** Combobox с полной клавиатурной навигацией по WAI-ARIA, таблица на 100 000+ строк без тормозов благодаря виртуализации, тосты, которые озвучивают скринридеры. **≈ 12 кБ JS + 3,6 кБ CSS в gzip** за 25+ компонентов, без зависимостей, кроме самого Vue. Каждый компонент проверяется axe-core.
 
-| Компонент                    | Что умеет                                                                                                    |
-| ---------------------------- | ------------------------------------------------------------------------------------------------------------ |
-| `VkCombobox`                 | WAI-ARIA 1.2, generic `T`, свой фильтр, слот для опции, клавиатура (↑ ↓ Home End Enter Esc)                  |
-| `VkDataTable`                | Виртуализация, стабильная «натуральная» сортировка, `aria-sort`/`aria-rowcount`, слоты ячеек, `v-model:sort` |
-| `VkToastHost` + `useToast()` | `role=status`/`alert`, кнопки действий, автоскрытие, учитывает `prefers-reduced-motion`                      |
+| Компонент | Что умеет |
+|---|---|
+| `VkCombobox` | WAI-ARIA 1.2, generic `T`, клавиатура, серверный поиск, очистка, неактивные опции, участие в `<form>` |
+| `VkDataTable` | Виртуализация 100 000+ строк, сортировка (в т.ч. своя), выбор строк, загрузка, футер, `aria-sort`/`aria-rowcount` |
+| `VkToastHost` + `useToast()` | `role=status`/`alert`, действия, пауза при наведении, `toast.promise()`, не больше 5 одновременно |
+| `VkDialog` | Нативный `<dialog>`, ловушка фокуса, возврат фокуса, боковая панель, bottom sheet на мобильных |
+| `VkTabs` | Roving tabindex, стрелки, вертикальный режим |
+| `VkMenu` | Меню действий: стрелки, Home/End, Esc, пропуск неактивных пунктов |
+| `VkTooltip` | `aria-describedby`, показ по фокусу, Esc |
+| `VkAccordion` | Один или несколько открытых разделов |
+| `VkPagination` | Пропуски «…», `aria-current="page"` |
+| `VkInput`, `VkTextarea`, `VkSelect`, `VkField` | Подписи, подсказки и ошибки, связанные через `aria-describedby`/`aria-invalid`; авторост textarea |
+| `VkButton`, `VkSwitch`, `VkCheckbox` | Варианты и загрузка; switch и indeterminate на нативном чекбоксе |
+| `VkAlert`, `VkBadge`, `VkProgress`, `VkSkeleton`, `VkSpinner` | Статусы и загрузка с правильными live-регионами |
+| `VkCard`, `VkAvatar`, `VkBreadcrumbs`, `VkEmptyState`, `VkKbd`, `VkCopyButton` | Мелочи, которые всё равно нужны |
+| `useTheme`, `useFocusTrap`, `useClickOutside`, `useMediaQuery`, `useDebounced` | Композаблы, на которых построены компоненты |
 
 Светлая и тёмная темы на CSS-переменных.
 
