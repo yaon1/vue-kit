@@ -66,6 +66,24 @@ const toast = useToast()
 
 Подсказка и ошибка озвучиваются скринридером вместе с полем. При ошибке поле получает `aria-invalid`.
 
+## Диалоги и меню
+
+```vue
+<VkDialog v-model:open="open" title="Удалить проект?">
+  Это действие нельзя отменить.
+  <template #footer="{ close }">
+    <VkButton @click="close">Отмена</VkButton>
+    <VkButton variant="danger" @click="remove">Удалить</VkButton>
+  </template>
+</VkDialog>
+
+<VkDialog v-model:open="filters" title="Фильтры" placement="right">…</VkDialog>
+
+<VkMenu label="Действия" :items="[{ key: 'edit', label: 'Редактировать' }, { key: 'delete', label: 'Удалить', danger: true }]" @select="onAction" />
+```
+
+Фокус заперт внутри открытого диалога и возвращается на кнопку, которая его открыла.
+
 ## Установка
 
 ```bash
