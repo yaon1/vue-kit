@@ -84,6 +84,27 @@ const toast = useToast()
 
 Фокус заперт внутри открытого диалога и возвращается на кнопку, которая его открыла.
 
+## Таблица: выбор, загрузка, итоги
+
+```vue
+<VkDataTable
+  v-model:sort="sort"
+  v-model:selected="selectedIds"
+  selectable
+  :loading="pending"
+  :rows="orders"
+  :columns="[
+    { key: 'priority', label: 'Приоритет', sortable: true, compare: (a, b) => rank[a.priority] - rank[b.priority] },
+    { key: 'total', label: 'Сумма', align: 'end', sortable: true },
+  ]"
+  row-key="id"
+  caption="Заказы"
+  @row-click="(order) => router.push(`/orders/${order.id}`)"
+>
+  <template #footer="{ rows }">Итого: {{ sum(rows) }}</template>
+</VkDataTable>
+```
+
 ## Установка
 
 ```bash
