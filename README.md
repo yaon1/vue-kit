@@ -151,7 +151,24 @@ npm i @yaon1/vue-kit
 }
 ```
 
-Тему можно задать явно через `<html data-theme="dark">` или `light`. Без атрибута она следует `prefers-color-scheme`.
+Переключатель темы с сохранением выбора:
+
+```vue
+<script setup lang="ts">
+const { preference, resolved } = useTheme() // 'light' | 'dark' | 'system'
+</script>
+
+<VkSelect v-model="preference" label="Тема" :options="[{ value: 'system', label: 'Системная' }, { value: 'light', label: 'Светлая' }, { value: 'dark', label: 'Тёмная' }]" />
+```
+
+Без выбора тема следует `prefers-color-scheme`.
+
+## Доступность
+
+- Компоненты построены по [WAI-ARIA Authoring Practices](https://www.w3.org/WAI/ARIA/apg/): combobox, tabs, menu, dialog, accordion.
+- Где возможно, используются нативные элементы: `<dialog>`, `<input type="checkbox" role="switch">`, `<select>`.
+- `src/a11y.test.ts` прогоняет axe-core по компонентам в CI.
+- Анимации отключаются при `prefers-reduced-motion`.
 
 ## Разработка
 
