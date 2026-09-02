@@ -123,6 +123,19 @@ const search = useDebounced(async (q: string) => {
 </template>
 ```
 
+## Тосты для асинхронных действий
+
+```ts
+const toast = useToast()
+await toast.promise(api.save(form), {
+  loading: 'Сохраняю…',
+  success: (r) => `Сохранено, версия ${r.version}`,
+  error: 'Не удалось сохранить',
+})
+```
+
+Таймер останавливается, пока пользователь наводит курсор на тост или переводит на него фокус.
+
 ## Установка
 
 ```bash
