@@ -105,6 +105,24 @@ const toast = useToast()
 </VkDataTable>
 ```
 
+## Серверный поиск в combobox
+
+```vue
+<script setup lang="ts">
+const results = ref<City[]>([])
+const loading = ref(false)
+const search = useDebounced(async (q: string) => {
+  results.value = await api.cities(q)
+  loading.value = false
+}, 300)
+</script>
+
+<template>
+  <VkCombobox v-model="city" :options="results" :get-label="(c) => c.name" :loading="loading" remote clearable label="Город"
+    @search="(q) => ((loading = true), search(q))" />
+</template>
+```
+
 ## Установка
 
 ```bash
