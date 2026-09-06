@@ -177,7 +177,9 @@ npm i
 npm run dev        # playground: http://localhost:5173
 npm test
 npm run typecheck
-npm run build
+npm run lint
+npm run coverage   # пороги покрытия: 85% строк
+npm run build && npm run size
 ```
 
 ## Лицензия
