@@ -1,6 +1,6 @@
 {
   "name": "@yaon1/vue-kit",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Accessible, themeable Vue 3 components: Combobox, DataTable, Toast",
   "license": "MIT",
   "type": "module",
