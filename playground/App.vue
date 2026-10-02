@@ -20,6 +20,12 @@ import { useTheme } from '../src'
 import { VkInput } from '../src'
 import { VkTextarea } from '../src'
 import { useDebounced } from '../src'
+import { VkAvatar } from '../src'
+import { VkBreadcrumbs } from '../src'
+import { VkCard } from '../src'
+import { VkEmptyState } from '../src'
+import { VkKbd } from '../src'
+import { VkCopyButton } from '../src'
 // extra-imports
 
 type Country = { code: string; name: string }
@@ -251,6 +257,21 @@ const toast = useToast()
         <VkTextarea v-model="comment" label="Комментарий" />
         <VkButton type="submit" variant="primary">Отправить</VkButton>
       </form>
+    </section>
+
+    <section>
+      <h2>Мелочи</h2>
+      <VkBreadcrumbs :items="[{ label: 'Главная', href: '#' }, { label: 'Заказы', href: '#' }, { label: '№ 42' }]" />
+      <p>
+        <VkAvatar name="Ада Лавлейс" /> <VkAvatar name="Алан Тьюринг" :size="44" /> <VkKbd keys="mod+K" />
+        <VkCopyButton text="npm i @yaon1/vue-kit" label="Копировать" copied-label="Скопировано" />
+      </p>
+      <VkCard>
+        <template #header>Заказы</template>
+        <VkEmptyState icon="📦" title="Пока нет заказов" description="Они появятся здесь после первой покупки.">
+          <VkButton variant="primary">Создать заказ</VkButton>
+        </VkEmptyState>
+      </VkCard>
     </section>
 
     <VkToastHost />
