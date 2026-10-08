@@ -79,6 +79,7 @@ const showAlert = ref(true)
 const theme = useTheme()
 const email = ref('')
 const comment = ref('')
+const drawer = ref(false)
 const toast = useToast()
 </script>
 
@@ -272,6 +273,14 @@ const toast = useToast()
           <VkButton variant="primary">Создать заказ</VkButton>
         </VkEmptyState>
       </VkCard>
+    </section>
+
+    <section>
+      <h2>Drawer &amp; counters</h2>
+      <VkButton @click="drawer = true">Фильтры <VkBadge tone="accent" :count="128" /></VkButton>
+      <VkDialog v-model:open="drawer" title="Фильтры" placement="right" width="360px">
+        <VkSwitch v-model="notify" label="Только активные" />
+      </VkDialog>
     </section>
 
     <VkToastHost />
